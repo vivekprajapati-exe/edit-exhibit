@@ -1,22 +1,37 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-12 px-6 bg-gray-100">
-      <div className="max-w-7xl mx-auto">
+    <footer className="py-12 px-6 bg-black relative">
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
-            <h2 className="text-2xl font-bold font-montserrat tracking-tight">
+          <motion.div 
+            className="mb-6 md:mb-0"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+          >
+            <h2 className="text-2xl font-bold font-montserrat tracking-tight glow-text">
               EDIT<span className="text-gray-500">FOLIO</span>
             </h2>
-            <p className="text-gray-600 mt-2">Professional Video Editing Portfolio</p>
-          </div>
+            <p className="text-gray-500 mt-2">Professional Video Editing Portfolio</p>
+          </motion.div>
           
-          <div className="flex space-x-6">
+          <motion.div 
+            className="flex space-x-6"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             <SocialLink href="#" aria-label="Twitter">
               <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.1 10.1 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
@@ -40,14 +55,20 @@ const Footer = () => {
                 <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
               </svg>
             </SocialLink>
-          </div>
+          </motion.div>
         </div>
         
-        <div className="mt-8 pt-8 border-t border-gray-200 text-center">
+        <motion.div 
+          className="mt-8 pt-8 border-t border-white/10 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
           <p className="text-gray-500 text-sm">
             © {currentYear} EDITFOLIO. All rights reserved.
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
@@ -62,7 +83,7 @@ const SocialLink = ({
   return (
     <a
       className={cn(
-        "text-gray-600 hover:text-black transition-colors duration-200",
+        "text-gray-500 hover:text-white transition-colors duration-200 hover-lift",
         className
       )}
       href={href}

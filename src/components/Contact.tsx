@@ -20,8 +20,11 @@ const Contact = () => {
   };
   
   return (
-    <section id="contact" className="py-24 px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="py-24 px-6 bg-[#0c0c0c] relative">
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -29,8 +32,8 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">Get In Touch</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
             Interested in working together? Fill out the form below or reach out directly to discuss your project.
           </p>
         </motion.div>
@@ -41,25 +44,25 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gray-50 p-8 rounded-2xl"
+            className="glass-effect p-8 rounded-2xl"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium">Name</label>
-                <Input id="name" placeholder="Your name" required />
+                <label htmlFor="name" className="text-sm font-medium text-gray-300">Name</label>
+                <Input id="name" placeholder="Your name" className="bg-black/30 border-white/10 text-white placeholder:text-gray-500" required />
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium">Email</label>
-                <Input id="email" type="email" placeholder="Your email" required />
+                <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
+                <Input id="email" type="email" placeholder="Your email" className="bg-black/30 border-white/10 text-white placeholder:text-gray-500" required />
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium">Message</label>
-                <Textarea id="message" placeholder="Tell me about your project" rows={5} required />
+                <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
+                <Textarea id="message" placeholder="Tell me about your project" rows={5} className="bg-black/30 border-white/10 text-white placeholder:text-gray-500" required />
               </div>
               
-              <Button type="submit" className="w-full bg-black hover:bg-gray-800">
+              <Button type="submit" className="w-full bg-white hover:bg-gray-200 text-black hover-lift">
                 Send Message
               </Button>
             </form>
@@ -72,39 +75,39 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col justify-center"
           >
-            <h3 className="text-2xl font-bold mb-6">Let's Create Something Amazing</h3>
+            <h3 className="text-2xl font-bold mb-6 text-white">Let's Create Something Amazing</h3>
             
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-400 mb-8">
               Whether you need a complete video edit, color grading services, or motion graphics for your project, I'm here to help bring your vision to life.
             </p>
             
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <div className="w-12 h-12 bg-white/5 glass-effect rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
                 </div>
-                <span className="text-gray-800">contact@yourname.com</span>
+                <span className="text-gray-300">contact@yourname.com</span>
               </div>
               
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <div className="w-12 h-12 bg-white/5 glass-effect rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                   </svg>
                 </div>
-                <span className="text-gray-800">+1 (555) 123-4567</span>
+                <span className="text-gray-300">+1 (555) 123-4567</span>
               </div>
               
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <div className="w-12 h-12 bg-white/5 glass-effect rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                   </svg>
                 </div>
-                <span className="text-gray-800">New York, NY</span>
+                <span className="text-gray-300">New York, NY</span>
               </div>
             </div>
           </motion.div>

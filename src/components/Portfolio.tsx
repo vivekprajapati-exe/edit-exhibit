@@ -89,7 +89,7 @@ const Portfolio = () => {
   };
 
   return (
-    <section id="portfolio" className="py-24 px-6 bg-white">
+    <section id="portfolio" className="py-24 px-6 bg-[#0c0c0c]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -98,24 +98,24 @@ const Portfolio = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Portfolio Showcase</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">Portfolio Showcase</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
             A curated selection of my best video editing work across various genres and styles.
           </p>
         </motion.div>
 
         <Tab.Group>
-          <Tab.List className="flex space-x-2 rounded-xl bg-gray-100 p-1 mb-12 mx-auto max-w-2xl">
+          <Tab.List className="flex space-x-2 rounded-xl bg-black/50 glass-effect p-1 mb-12 mx-auto max-w-2xl">
             {categories.map((category) => (
               <Tab
                 key={category}
                 className={({ selected }) =>
                   cn(
                     'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-white focus:outline-none',
+                    'ring-white/10 ring-opacity-60 ring-offset-2 ring-offset-[#0c0c0c] focus:outline-none transition-all duration-200',
                     selected
-                      ? 'bg-white shadow text-black'
-                      : 'text-gray-500 hover:bg-white/[0.12] hover:text-black'
+                      ? 'bg-white/10 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)]'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   )
                 }
                 onClick={() => setSelectedCategory(category)}
@@ -136,7 +136,7 @@ const Portfolio = () => {
               >
                 {filteredItems.map((item) => (
                   <motion.div key={item.id} variants={itemVariants} className="portfolio-item">
-                    <Card className="overflow-hidden border-0 shadow-lg rounded-xl">
+                    <Card className="overflow-hidden border-0 bg-black/30 glass-effect rounded-xl">
                       <CardContent className="p-0">
                         <VideoPlayer
                           youtubeId={item.youtubeId}
@@ -144,8 +144,8 @@ const Portfolio = () => {
                           aspectRatio="16:9"
                         />
                         <div className="p-5">
-                          <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                          <p className="text-gray-600 text-sm">{item.description}</p>
+                          <h3 className="text-xl font-semibold mb-2 text-white">{item.title}</h3>
+                          <p className="text-gray-400 text-sm">{item.description}</p>
                         </div>
                       </CardContent>
                     </Card>
