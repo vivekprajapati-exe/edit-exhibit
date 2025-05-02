@@ -120,6 +120,38 @@ export default {
 						opacity: '1'
 					}
 				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
+				},
+				'pulse-slow': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.8'
+					}
+				},
+				'rotate-slow': {
+					'0%': {
+						transform: 'rotate(0deg)'
+					},
+					'100%': {
+						transform: 'rotate(360deg)'
+					}
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-500px 0'
+					},
+					'100%': {
+						backgroundPosition: '500px 0'
+					}
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -127,7 +159,42 @@ export default {
 				'fade-in': 'fade-in 0.5s ease-out',
 				'fade-out': 'fade-out 0.5s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
-			}
+				'float': 'float 6s ease-in-out infinite',
+				'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+				'rotate-slow': 'rotate-slow 10s linear infinite',
+				'shimmer': 'shimmer 2s infinite'
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						color: '#ffffff',
+						a: {
+							color: '#ffffff',
+							'&:hover': {
+								color: '#dedede',
+							},
+						},
+						h1: {
+							color: '#ffffff',
+						},
+						h2: {
+							color: '#ffffff',
+						},
+						h3: {
+							color: '#ffffff',
+						},
+						h4: {
+							color: '#ffffff',
+						},
+						code: {
+							color: '#ffffff',
+						},
+						strong: {
+							color: '#ffffff',
+						},
+					},
+				},
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
