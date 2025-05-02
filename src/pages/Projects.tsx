@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -108,9 +109,9 @@ const Projects = () => {
                       <ChevronLeft className="mr-2 h-4 w-4" /> Back to projects
                     </Button>
                     
-                    {/* Fix for video display issue - Properly wrapped in container */}
-                    <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden scroll-reveal">
-                      <div className="relative w-full">
+                    {/* Fix for video display - Making sure it's visible and styled properly */}
+                    <div className="w-full rounded-xl overflow-hidden relative scroll-reveal">
+                      <div className="w-full aspect-video">
                         <VideoPlayer
                           youtubeId={selectedProjectData.youtubeId}
                           title={selectedProjectData.title}
