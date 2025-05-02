@@ -37,11 +37,11 @@ const Index = () => {
     >
       {/* Progress bar at the top of the page */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 h-[2px] bg-white z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-500 to-purple-500 z-50 origin-left"
         style={{ scaleX }}
       />
       
-      {/* Background gradients - subtle animated */}
+      {/* Background gradients */}
       <motion.div 
         className="fixed inset-0 pointer-events-none z-0"
         style={{ y: backgroundY }}
@@ -50,7 +50,7 @@ const Index = () => {
         <motion.div 
           className="absolute top-0 right-0 w-[40vw] h-[40vh] rounded-full opacity-20 blur-[120px]"
           style={{ 
-            background: 'radial-gradient(circle, rgba(125,125,225,0.3) 0%, rgba(125,125,225,0) 70%)',
+            background: 'radial-gradient(circle, rgba(225,125,125,0.3) 0%, rgba(125,125,225,0) 70%)',
           }}
           animate={{
             opacity: [0.15, 0.25, 0.15],
@@ -67,7 +67,7 @@ const Index = () => {
         <motion.div 
           className="absolute bottom-0 left-0 w-[40vw] h-[40vh] rounded-full opacity-10 blur-[120px]"
           style={{ 
-            background: 'radial-gradient(circle, rgba(225,125,125,0.3) 0%, rgba(225,125,125,0) 70%)',
+            background: 'radial-gradient(circle, rgba(125,125,225,0.3) 0%, rgba(125,125,225,0) 70%)',
           }}
           animate={{
             opacity: [0.1, 0.2, 0.1],

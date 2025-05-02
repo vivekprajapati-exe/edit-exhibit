@@ -1,26 +1,13 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import VideoPlayer from './VideoPlayer';
-import { Card, CardContent } from '@/components/ui/card';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext
-} from '@/components/ui/carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { ChevronRight, Play, Video } from 'lucide-react';
+import { ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link } from 'react-router-dom';
 
 interface PortfolioItem {
   id: string;
@@ -29,16 +16,18 @@ interface PortfolioItem {
   category: string;
   description: string;
   tags: string[];
+  featured?: boolean;
 }
 
-const portfolioItems: PortfolioItem[] = [
+export const portfolioItems: PortfolioItem[] = [
   {
     id: '1',
     title: 'Cinematic Travel Film',
     youtubeId: 'dQw4w9WgXcQ',
     category: 'Film',
     description: 'A breathtaking journey through the landscapes of Iceland, capturing the beauty of nature.',
-    tags: ['Cinematic', 'Travel', '4K', 'Landscape']
+    tags: ['Cinematic', 'Travel', '4K', 'Landscape'],
+    featured: true
   },
   {
     id: '2',
@@ -46,7 +35,8 @@ const portfolioItems: PortfolioItem[] = [
     youtubeId: '3tmd-ClpJxA',
     category: 'Commercial',
     description: 'Elegant product showcase with smooth transitions and professional color grading.',
-    tags: ['Commercial', 'Product', 'Transitions', 'Color Grading']
+    tags: ['Commercial', 'Product', 'Transitions', 'Color Grading'],
+    featured: true
   },
   {
     id: '3',
@@ -54,7 +44,8 @@ const portfolioItems: PortfolioItem[] = [
     youtubeId: 'SlPhMPnQ58k',
     category: 'Corporate',
     description: 'Storytelling that connects your brand values with your audience.',
-    tags: ['Corporate', 'Storytelling', 'Brand', 'Narrative']
+    tags: ['Corporate', 'Storytelling', 'Brand', 'Narrative'],
+    featured: true
   },
   {
     id: '4',
@@ -82,231 +73,89 @@ const portfolioItems: PortfolioItem[] = [
   }
 ];
 
-const categories = ['All', 'Film', 'Commercial', 'Corporate', 'Music', 'Motion'];
-
 const Portfolio = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const isMobile = useIsMobile();
-  
-  const filteredItems = portfolioItems.filter(item => 
-    selectedCategory === 'All' || item.category === selectedCategory
-  );
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1.0] }
-    },
-    hover: {
-      y: -10,
-      boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
-      transition: { duration: 0.3, ease: "easeOut" }
-    }
-  };
-
-  const handleItemClick = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
+  const featuredItems = portfolioItems.filter(item => item.featured);
 
   return (
-    <section id="portfolio" className="py-24 px-6 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto">
+    <section id="portfolio" className="py-24 px-6 bg-[#0a0a0a] relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#150a0a] to-[#0a0a0a] pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-gradient">
-            Portfolio Showcase
+          <h2 className="text-7xl md:text-8xl font-bold mb-6 tracking-tight text-white">
+            Edições de <span className="text-gradient">Video</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl text-lg">
             A curated selection of my finest video editing work across various genres and styles.
           </p>
         </motion.div>
 
-        {isMobile ? (
-          // Mobile view with carousel
-          <div className="px-4">
-            <Tabs defaultValue="All" className="w-full mb-10">
-              <TabsList className="flex w-full h-auto p-1 bg-black/20 glass-effect overflow-x-auto gap-1 justify-start no-scrollbar">
-                {categories.map((category) => (
-                  <TabsTrigger 
-                    key={category}
-                    value={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className="px-4 py-2 whitespace-nowrap"
+        <div className={cn(
+          "grid grid-cols-1 gap-12",
+          isMobile ? "" : "md:grid-cols-2 lg:grid-cols-3"
+        )}>
+          {featuredItems.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group relative"
+            >
+              <div className="relative overflow-hidden rounded-lg bg-black">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
+                <AspectRatio ratio={16/9} className="relative z-0">
+                  <VideoPlayer
+                    youtubeId={item.youtubeId}
+                    title={item.title}
+                    aspectRatio="16:9"
+                  />
+                </AspectRatio>
+                
+                <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
                   >
-                    {category}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-            
-            <Carousel className="w-full">
-              <CarouselContent>
-                {filteredItems.map((item, index) => (
-                  <CarouselItem key={item.id}>
-                    <motion.div 
-                      variants={itemVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, margin: "-50px" }}
-                      className="h-full"
-                    >
-                      <Card className="overflow-hidden border-0 bg-black/40 glass-effect rounded-xl h-full">
-                        <CardContent className="p-0 flex flex-col h-full">
-                          <div className="relative group">
-                            <AspectRatio ratio={16/9}>
-                              <VideoPlayer
-                                youtubeId={item.youtubeId}
-                                title={item.title}
-                                aspectRatio="16:9"
-                              />
-                            </AspectRatio>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center p-6">
-                              <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                className="bg-white text-black rounded-full w-12 h-12 flex items-center justify-center"
-                              >
-                                <Play size={20} className="ml-1" />
-                              </motion.div>
-                            </div>
-                          </div>
-                          <div className="p-5 flex-grow flex flex-col">
-                            <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-                            <p className="text-gray-400 text-sm mb-4">{item.description}</p>
-                            <div className="flex flex-wrap gap-2 mt-auto">
-                              {item.tags.map((tag, i) => (
-                                <Badge key={i} variant="outline" className="bg-white/5 hover:bg-white/10">
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="flex justify-center mt-6 gap-2">
-                <CarouselPrevious className="relative inset-0 translate-y-0" />
-                <CarouselNext className="relative inset-0 translate-y-0" />
+                    <Play size={24} className="ml-1" />
+                  </motion.div>
+                </div>
+                
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                  <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+                  <div className="flex gap-2 mb-3">
+                    {item.tags.slice(0, 2).map((tag, i) => (
+                      <Badge key={i} variant="outline" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </Carousel>
-          </div>
-        ) : (
-          // Desktop view with grid
-          <>
-            <Tabs defaultValue="All" className="w-full mb-12">
-              <TabsList className="grid grid-cols-6 max-w-3xl mx-auto p-1 bg-black/20 glass-effect">
-                {categories.map((category) => (
-                  <TabsTrigger 
-                    key={category}
-                    value={category}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedCategory}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.div 
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                  variants={containerVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-100px" }}
-                >
-                  {filteredItems.map((item, index) => (
-                    <motion.div 
-                      key={item.id} 
-                      variants={itemVariants}
-                      whileHover="hover"
-                      className={cn(
-                        "cursor-pointer transform transition-all duration-500",
-                        "hover:z-10"
-                      )}
-                      onClick={() => handleItemClick(index)}
-                    >
-                      <Card className="overflow-hidden border-0 bg-black/40 glass-effect rounded-xl h-full">
-                        <CardContent className="p-0 flex flex-col h-full">
-                          <div className="relative group">
-                            <AspectRatio ratio={16/9}>
-                              <VideoPlayer
-                                youtubeId={item.youtubeId}
-                                title={item.title}
-                                aspectRatio="16:9"
-                              />
-                            </AspectRatio>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center p-6">
-                              <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                className="bg-white text-black rounded-full w-12 h-12 flex items-center justify-center"
-                              >
-                                <Play size={20} className="ml-1" />
-                              </motion.div>
-                            </div>
-                          </div>
-                          <div className="p-5 flex-grow flex flex-col">
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                              <Badge className="bg-white/10 text-xs hover:bg-white/20">{item.category}</Badge>
-                            </div>
-                            <p className="text-gray-400 text-sm mb-4">{item.description}</p>
-                            <div className="flex flex-wrap gap-2 mt-auto">
-                              {item.tags.map((tag, i) => (
-                                <Badge key={i} variant="outline" className="bg-white/5 hover:bg-white/10">
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-          </>
-        )}
+            </motion.div>
+          ))}
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex justify-center mt-16"
         >
-          <a href="#contact" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors">
-            <span className="text-lg">Ready to work together?</span>
+          <Link to="/projects" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm">
+            <span className="text-lg font-medium">View All Projects</span>
             <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

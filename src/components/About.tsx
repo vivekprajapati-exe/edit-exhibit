@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Video, Play, FileVideo } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const About = () => {
   const skills = [
@@ -42,46 +43,79 @@ const About = () => {
       />
       
       <div className="max-w-7xl mx-auto relative z-10">
+        <div className="mb-16">
+          <motion.h2 
+            className="text-7xl md:text-8xl font-bold mb-8 tracking-tight text-white"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Sobre <span className="text-gradient">mim</span>
+          </motion.h2>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="relative"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gradient">About Me</h2>
-            <p className="text-gray-400 mb-6">
+            <div className="relative w-full max-w-md mx-auto">
+              <div className="absolute -inset-4 bg-gradient-to-r from-red-500/30 to-purple-500/30 rounded-lg blur-xl opacity-70"></div>
+              <div className="relative overflow-hidden rounded-lg border border-white/10">
+                <img 
+                  src="/lovable-uploads/b29d5b77-5e28-4b18-9a5e-90e7c5986410.png" 
+                  alt="Profile" 
+                  className="w-full object-cover"
+                />
+              </div>
+            </div>
+            
+            <p className="text-gray-400 mt-8">
               I'm a professional video editor with over 5 years of experience crafting visual stories for brands, filmmakers, and content creators. My goal is to bring your vision to life through expert editing, color grading, and motion design.
             </p>
-            <p className="text-gray-400 mb-6">
-              My editing philosophy centers on enhancing the narrative while maintaining the authentic voice of your content. I specialize in creating seamless, engaging edits that captivate viewers and communicate your message effectively.
-            </p>
-            <p className="text-gray-400">
+            
+            <p className="text-gray-400 mt-4">
               When I'm not in the editing room, I'm constantly exploring new techniques, visual styles, and storytelling approaches to bring fresh perspectives to my work.
             </p>
           </motion.div>
           
-          <div className="space-y-6">
-            {skills.map((skill, index) => (
-              <motion.div 
-                key={index}
-                className="bg-black/40 glass-effect p-6 rounded-xl hover-glow"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="bg-white/5 p-3 rounded-lg glass-effect">
-                    {skill.icon}
+          <div>
+            <motion.h3
+              className="text-2xl font-bold mb-8 text-white"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              Habilidades
+            </motion.h3>
+            
+            <div className="space-y-6">
+              {skills.map((skill, index) => (
+                <motion.div 
+                  key={index}
+                  className="bg-black/40 backdrop-blur-sm border border-white/5 p-6 rounded-xl hover-glow"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="bg-white/5 p-3 rounded-lg glass-effect">
+                      {skill.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-xl mb-2 text-white">{skill.title}</h3>
+                      <p className="text-gray-400">{skill.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-xl mb-2 text-white">{skill.title}</h3>
-                    <p className="text-gray-400">{skill.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
