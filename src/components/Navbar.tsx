@@ -40,13 +40,12 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="text-2xl font-bebas tracking-wider glow-text">
-          EDIT<span className="text-gray-400">FOLIO</span>
+          VIVEK<span className="text-gray-400">PRAJAPATI</span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-8">
           {isHomePage ? (
             <>
-              <NavLink href="#portfolio">Portfolio</NavLink>
               <NavLink href="#about">About</NavLink>
               <NavLink href="#contact">Contact</NavLink>
               <Link to="/projects" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Projects</Link>
@@ -54,7 +53,6 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Home</Link>
-              <Link to="/#portfolio" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Portfolio</Link>
               <Link to="/#about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
               <Link to="/#contact" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Contact</Link>
             </>

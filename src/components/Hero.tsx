@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+    <section className="relative min-h-screen flex bg-black items-center justify-center px-6 py-20 overflow-hidden">
       {/* Grid background pattern */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none z-0"></div>
       
@@ -13,7 +13,7 @@ const Hero = () => {
       <motion.div 
         className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(125, 125, 125, 0.15), transparent 70%)',
+          background: 'black',
         }}
         animate={{
           scale: [1, 1.2, 1],
@@ -57,7 +57,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="pt-4"
             >
-              <Button className="rounded-full px-8 py-6 bg-white hover:bg-gray-200 text-black font-boldone text-lg hover-lift">
+              <Button className="rounded-full px-8 py-6 bg-white hover:bg-gray-200 text-black     hover-lift">
                 <a href="#portfolio">View Portfolio</a>
               </Button>
             </motion.div>
@@ -69,16 +69,16 @@ const Hero = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/10 glass-effect">
+            <div className=" overflow-x-hidden glass-effect">
               <video 
                 className="w-full aspect-video object-cover"
                 autoPlay 
                 muted 
                 loop 
                 playsInline
-                poster="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
+                poster="/lovable-uploads/landing-page.gif"
               >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-editing-a-movie-in-a-studio-22728-large.mp4" type="video/mp4" />
+                <source src="/lovable-uploads/landing-page.gif" type="video/gif" />
                 Your browser does not support the video tag.
               </video>
             </div>

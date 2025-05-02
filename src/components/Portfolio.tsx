@@ -90,8 +90,8 @@ const Portfolio = () => {
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
           className="mb-16 scroll-reveal"
         >
-          <h2 className="text-7xl md:text-8xl font-bebas uppercase tracking-tight text-white">
-            Edições de <span className="text-gradient">Video</span>
+          <h2 className="text-[15rem] md:text-8xl font-bebas uppercase tracking-tight text-white">
+            MY<span className="text-gradient">PROJECTS</span>
           </h2>
           <p className="text-gray-400 max-w-2xl text-lg font-roboto">
             A curated selection of my finest video editing work across various genres and styles.

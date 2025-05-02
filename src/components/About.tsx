@@ -51,7 +51,7 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Sobre <span className="text-gradient">mim</span>
+            ABOUT <span className="text-gradient">ME</span>
           </motion.h2>
         </div>
         
@@ -67,15 +67,18 @@ const About = () => {
               <div className="absolute -inset-4 bg-gradient-to-r from-red-500/30 to-purple-500/30 rounded-lg blur-xl opacity-70"></div>
               <div className="relative overflow-hidden rounded-lg border border-white/10">
                 <img 
-                  src="/lovable-uploads/b29d5b77-5e28-4b18-9a5e-90e7c5986410.png" 
+                  src="/lovable-uploads/me.jpg" 
                   alt="Profile" 
-                  className="w-full object-cover"
+                  className="w-full object-contain"
                 />
               </div>
             </div>
             
             <p className="text-gray-400 mt-8">
-              I'm a professional video editor with over 5 years of experience crafting visual stories for brands, filmmakers, and content creators. My goal is to bring your vision to life through expert editing, color grading, and motion design.
+              I'm a professional video editor with over 2 years of experience crafting visual stories for brands, filmmakers, and content creators. My goal is to bring your vision to life through expert editing, color grading, and motion design.
+              <span className='font-boldone glow-text font-bold text-2xl'>
+              I use premier pro , After Effects , Davinci Resolve , Lightroom
+              </span>
             </p>
             
             <p className="text-gray-400 mt-4">
@@ -91,7 +94,7 @@ const About = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.4 }}
             >
-              Habilidades
+              VIVEK PRAJAPATI
             </motion.h3>
             
             <div className="space-y-6">
