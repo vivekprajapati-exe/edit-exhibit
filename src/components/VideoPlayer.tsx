@@ -108,7 +108,7 @@ const VideoPlayer = ({
 
   return (
     <motion.div 
-      className={cn("custom-video-player group", aspectRatioClass, className, isPlaying && "playing")}
+      className={cn("custom-video-player group relative", aspectRatioClass, className, isPlaying && "playing")}
       ref={containerRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ const VideoPlayer = ({
     >
       <iframe
         ref={playerRef}
-        className="absolute w-full h-full top-0 left-0"
+        className="absolute w-full h-full top-0 left-0 z-10"
         src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&modestbranding=1&controls=0&showinfo=0`}
         title={title}
         frameBorder="0"
@@ -130,7 +130,7 @@ const VideoPlayer = ({
       <AnimatePresence>
         {showControls && (
           <motion.div 
-            className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-between"
+            className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-between z-20"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -173,7 +173,7 @@ const VideoPlayer = ({
       {/* Overlay for when video is not playing */}
       {!isPlaying && (
         <div 
-          className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center cursor-pointer"
+          className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center cursor-pointer z-20"
           onClick={togglePlay}
         >
           <motion.div

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VideoPlayer from '@/components/VideoPlayer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { portfolioItems } from '@/components/Portfolio';
+import useScrollReveal from '@/hooks/use-scroll-reveal';
 
 const categories = ['All', 'Film', 'Commercial', 'Corporate', 'Music', 'Motion'];
 
@@ -18,34 +18,8 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const isMobile = useIsMobile();
   
-  // Scroll reveal
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const scrollElements = document.querySelectorAll('.scroll-reveal');
-    scrollElements.forEach(el => {
-      observer.observe(el);
-    });
-
-    return () => {
-      scrollElements.forEach(el => {
-        observer.unobserve(el);
-      });
-    };
-  }, [selectedCategory, selectedProject]);
+  // Use the hook instead of inline scroll reveal implementation
+  useScrollReveal();
 
   const filteredItems = portfolioItems.filter(item => 
     selectedCategory === 'All' || item.category === selectedCategory
@@ -134,14 +108,16 @@ const Projects = () => {
                       <ChevronLeft className="mr-2 h-4 w-4" /> Back to projects
                     </Button>
                     
+                    {/* Fix for video display issue - Properly wrapped in container */}
                     <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden scroll-reveal">
-                      <AspectRatio ratio={16/9} className="relative">
+                      <div className="relative w-full">
                         <VideoPlayer
                           youtubeId={selectedProjectData.youtubeId}
                           title={selectedProjectData.title}
                           aspectRatio="16:9"
+                          className="w-full"
                         />
-                      </AspectRatio>
+                      </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
