@@ -291,7 +291,7 @@ const Portfolio = () => {
                     </motion.div>
                   ))}
                 </motion.div>
-              </AnimatePresence>
+              </motion.div>
             </AnimatePresence>
           </>
         )}
