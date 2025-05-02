@@ -22,6 +22,7 @@ const VideoPlayer = ({
   const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null);
   const playerRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
 
   const aspectRatioClass = {
     "16:9": "aspect-video",
@@ -54,6 +55,17 @@ const VideoPlayer = ({
     }
   };
 
+  const toggleMute = () => {
+    if (playerRef.current && playerRef.current.contentWindow) {
+      if (isMuted) {
+        playerRef.current.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+      } else {
+        playerRef.current.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+      }
+      setIsMuted(!isMuted);
+    }
+  };
+
   const handleMouseMove = () => {
     setShowControls(true);
     
@@ -64,7 +76,9 @@ const VideoPlayer = ({
     
     // Set a new timeout
     const timeout = setTimeout(() => {
-      setShowControls(false);
+      if (isPlaying) {
+        setShowControls(false);
+      }
     }, 3000);
     
     setControlsTimeout(timeout);
@@ -78,7 +92,9 @@ const VideoPlayer = ({
     if (controlsTimeout) {
       clearTimeout(controlsTimeout);
     }
-    setShowControls(false);
+    if (isPlaying) {
+      setShowControls(false);
+    }
   };
 
   // Clear timeout on unmount
@@ -92,7 +108,7 @@ const VideoPlayer = ({
 
   return (
     <motion.div 
-      className={cn("custom-video-player group", aspectRatioClass, className)}
+      className={cn("custom-video-player group", aspectRatioClass, className, isPlaying && "playing")}
       ref={containerRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -104,7 +120,7 @@ const VideoPlayer = ({
       <iframe
         ref={playerRef}
         className="absolute w-full h-full top-0 left-0"
-        src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&modestbranding=1`}
+        src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&modestbranding=1&controls=0&showinfo=0`}
         title={title}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -138,8 +154,9 @@ const VideoPlayer = ({
               <button 
                 className="w-8 h-8 rounded-full bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-opacity-30 transition-all"
                 aria-label="Toggle volume"
+                onClick={toggleMute}
               >
-                <Volume2 size={16} />
+                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
               </button>
               
               <button 
@@ -152,6 +169,22 @@ const VideoPlayer = ({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Overlay for when video is not playing */}
+      {!isPlaying && (
+        <div 
+          className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center cursor-pointer"
+          onClick={togglePlay}
+        >
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
+          >
+            <Play size={24} className="ml-1" />
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 };

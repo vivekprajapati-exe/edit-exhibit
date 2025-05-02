@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
@@ -17,6 +17,35 @@ const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  
+  // Scroll reveal
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const scrollElements = document.querySelectorAll('.scroll-reveal');
+    scrollElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => {
+      scrollElements.forEach(el => {
+        observer.unobserve(el);
+      });
+    };
+  }, [selectedCategory, selectedProject]);
 
   const filteredItems = portfolioItems.filter(item => 
     selectedCategory === 'All' || item.category === selectedCategory
@@ -46,7 +75,7 @@ const Projects = () => {
                 asChild 
                 className="mb-4 md:mb-0 hover:bg-white/5 -ml-4"
               >
-                <Link to="/" className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2 font-boldone">
                   <ChevronLeft size={18} />
                   <span>Back to Home</span>
                 </Link>
@@ -54,7 +83,7 @@ const Projects = () => {
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-6xl font-bold text-white"
+              className="text-5xl md:text-6xl font-bebas uppercase tracking-tight text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -76,7 +105,7 @@ const Projects = () => {
                     key={category}
                     value={category}
                     onClick={() => setSelectedCategory(category)}
-                    className="px-6 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:text-black"
+                    className="px-6 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:text-black font-boldone"
                   >
                     {category}
                   </TabsTrigger>
@@ -100,12 +129,12 @@ const Projects = () => {
                     <Button 
                       variant="outline"
                       onClick={() => setSelectedProject(null)}
-                      className="mb-6"
+                      className="mb-6 font-boldone"
                     >
                       <ChevronLeft className="mr-2 h-4 w-4" /> Back to projects
                     </Button>
                     
-                    <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden">
+                    <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden scroll-reveal">
                       <AspectRatio ratio={16/9} className="relative">
                         <VideoPlayer
                           youtubeId={selectedProjectData.youtubeId}
@@ -116,8 +145,8 @@ const Projects = () => {
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                      <div className="md:col-span-2">
-                        <h2 className="text-3xl font-bold text-white mb-4">{selectedProjectData.title}</h2>
+                      <div className="md:col-span-2 scroll-reveal">
+                        <h2 className="text-3xl font-bebas uppercase text-white mb-4">{selectedProjectData.title}</h2>
                         <div className="flex flex-wrap gap-2 mb-6">
                           {selectedProjectData.tags.map((tag, i) => (
                             <Badge key={i} variant="outline" className="bg-white/5 hover:bg-white/10">
@@ -125,12 +154,12 @@ const Projects = () => {
                             </Badge>
                           ))}
                         </div>
-                        <p className="text-gray-400">{selectedProjectData.description}</p>
+                        <p className="text-gray-400 font-roboto">{selectedProjectData.description}</p>
                       </div>
                       
-                      <div className="bg-black/20 backdrop-blur-sm border border-white/5 p-6 rounded-xl">
-                        <h3 className="text-xl font-bold text-white mb-4">Project Details</h3>
-                        <div className="space-y-4 text-sm">
+                      <div className="bg-black/20 backdrop-blur-sm border border-white/5 p-6 rounded-xl scroll-reveal">
+                        <h3 className="text-xl font-boldone text-white mb-4">Project Details</h3>
+                        <div className="space-y-4 text-sm font-roboto">
                           <div>
                             <p className="text-gray-500">Category</p>
                             <p className="text-white">{selectedProjectData.category}</p>
@@ -148,18 +177,18 @@ const Projects = () => {
                     </div>
                     
                     <div className="mt-16">
-                      <h3 className="text-2xl font-bold text-white mb-6">Before & After</h3>
+                      <h3 className="text-2xl font-bebas uppercase text-white mb-6">Before & After</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4">
-                          <h4 className="text-center text-white mb-4">Before</h4>
+                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4 scroll-reveal">
+                          <h4 className="text-center font-boldone text-white mb-4">Before</h4>
                           <img 
                             src="/lovable-uploads/d380a5b4-2251-4e2e-9ebc-b44dd1eff3e7.png" 
                             alt="Before" 
                             className="w-full rounded-lg"
                           />
                         </div>
-                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4">
-                          <h4 className="text-center text-white mb-4">After</h4>
+                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4 scroll-reveal">
+                          <h4 className="text-center font-boldone text-white mb-4">After</h4>
                           <img 
                             src="/lovable-uploads/d380a5b4-2251-4e2e-9ebc-b44dd1eff3e7.png" 
                             alt="After" 
@@ -186,7 +215,7 @@ const Projects = () => {
                       initial={{ opacity: 0, y: 50 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="group cursor-pointer relative"
+                      className="group cursor-pointer relative scroll-reveal"
                       onClick={() => setSelectedProject(item.id)}
                     >
                       <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 to-purple-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
@@ -210,7 +239,7 @@ const Projects = () => {
                         </div>
                         
                         <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                          <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+                          <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
                           <div className="flex flex-wrap gap-2 mb-2">
                             {item.tags.slice(0, 2).map((tag, i) => (
                               <Badge key={i} className="bg-white/10 hover:bg-white/20">
@@ -218,7 +247,7 @@ const Projects = () => {
                               </Badge>
                             ))}
                           </div>
-                          <p className="text-gray-400 text-sm line-clamp-2">{item.description}</p>
+                          <p className="text-gray-400 text-sm line-clamp-2 font-roboto">{item.description}</p>
                         </div>
                       </div>
                     </motion.div>

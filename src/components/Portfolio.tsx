@@ -88,12 +88,12 @@ const Portfolio = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
-          className="mb-16"
+          className="mb-16 scroll-reveal"
         >
-          <h2 className="text-7xl md:text-8xl font-bold mb-6 tracking-tight text-white">
+          <h2 className="text-7xl md:text-8xl font-bebas uppercase tracking-tight text-white">
             Edições de <span className="text-gradient">Video</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl text-lg">
+          <p className="text-gray-400 max-w-2xl text-lg font-roboto">
             A curated selection of my finest video editing work across various genres and styles.
           </p>
         </motion.div>
@@ -109,7 +109,7 @@ const Portfolio = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative"
+              className="group relative scroll-reveal"
             >
               <div className="relative overflow-hidden rounded-lg bg-black">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
@@ -131,7 +131,7 @@ const Portfolio = () => {
                 </div>
                 
                 <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+                  <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
                   <div className="flex gap-2 mb-3">
                     {item.tags.slice(0, 2).map((tag, i) => (
                       <Badge key={i} variant="outline" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm">
@@ -150,10 +150,10 @@ const Portfolio = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center mt-16"
+          className="flex justify-center mt-16 scroll-reveal"
         >
           <Link to="/projects" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm">
-            <span className="text-lg font-medium">View All Projects</span>
+            <span className="text-lg font-boldone">View All Projects</span>
             <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>

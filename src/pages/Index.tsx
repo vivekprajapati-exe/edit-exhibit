@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Portfolio from '@/components/Portfolio';
@@ -19,6 +19,47 @@ const Index = () => {
   // Parallax effect for background elements
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   
+  // Refs for scroll reveal elements
+  const revealRefs = useRef<HTMLElement[]>([]);
+  
+  // Add to reveal refs
+  const addToRefs = (el: HTMLElement | null) => {
+    if (el && !revealRefs.current.includes(el)) {
+      revealRefs.current.push(el);
+    }
+  };
+
+  // Scroll reveal function
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          // Stop observing once revealed
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Select all elements with scroll-reveal class
+    const scrollElements = document.querySelectorAll('.scroll-reveal');
+    scrollElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => {
+      scrollElements.forEach(el => {
+        observer.unobserve(el);
+      });
+    };
+  }, []);
+
   // Disable overflow on mount and restore on unmount
   useEffect(() => {
     document.body.style.overflowX = 'hidden';
