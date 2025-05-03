@@ -137,13 +137,6 @@ const VideoPlayer = ({
             transition={{ duration: 0.2 }}
           >
             <div className="flex items-center gap-2">
-              <button 
-                onClick={togglePlay}
-                className="w-10 h-10 rounded-full bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-opacity-30 transition-all"
-                aria-label={isPlaying ? "Pause" : "Play"}
-              >
-                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-              </button>
               
               <div className="text-white text-sm font-medium ml-2 hidden sm:block">
                 {title}
@@ -181,7 +174,7 @@ const VideoPlayer = ({
             whileTap={{ scale: 0.95 }}
             className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
           >
-            <Play size={24} className="ml-1" />
+
           </motion.div>
         </div>
       )}

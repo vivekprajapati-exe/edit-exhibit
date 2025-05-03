@@ -19,13 +19,18 @@ interface PortfolioItem {
   featured?: boolean;
 }
 
+/*
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/W_YI4a4kQ08?si=LoQMNq3aIgY3Ywfo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+*/
+
 export const portfolioItems: PortfolioItem[] = [
   {
     id: '1',
-    title: 'Cinematic Travel Film',
-    youtubeId: 'dQw4w9WgXcQ',
+    title: 'Cinematogprhy Showreel',
+    youtubeId: 'W_YI4a4kQ08',
     category: 'Film',
-    description: 'A breathtaking journey through the landscapes of Iceland, capturing the beauty of nature.',
+    description: 'A breathtaking journey through the cinematics captured with just phone.',
     tags: ['Cinematic', 'Travel', '4K', 'Landscape'],
     featured: true
   },
@@ -120,15 +125,7 @@ const Portfolio = () => {
                     aspectRatio="16:9"
                   />
                 </AspectRatio>
-                
-                <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
-                  >
-                    <Play size={24} className="ml-1" />
-                  </motion.div>
-                </div>
+              
                 
                 <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                   <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
