@@ -67,7 +67,7 @@ const Projects = () => {
               <TabsList className={cn(
                 "h-auto p-1 bg-black/20 backdrop-blur-sm border border-white/5 rounded-full",
                 isMobile 
-                  ? "flex w-full overflow-x-auto gap-1 justify-start no-scrollbar" 
+                  ? "flex w-full overflow-x-auto gap-1 justify-start pb-1 px-1 flex-nowrap" 
                   : "inline-flex"
               )}>
                 {categories.map((category) => (
@@ -75,7 +75,7 @@ const Projects = () => {
                     key={category}
                     value={category}
                     onClick={() => setSelectedCategory(category)}
-                    className="px-6 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:text-black font-boldone"
+                    className="px-4 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:text-black font-boldone whitespace-nowrap flex-shrink-0"
                   >
                     {category}
                   </TabsTrigger>
