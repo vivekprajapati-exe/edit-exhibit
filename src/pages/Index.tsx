@@ -8,6 +8,9 @@ import { motion } from 'framer-motion';
 import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 import HeroInteractive from '@/components/HeroInteractive';
 import AboutInteractive from '@/components/AboutInteractive';
+import MainHero from '@/components/MainHero';
+import VideoShowcase from '@/components/VideoShowcase';
+import ScrollMarquee from '@/components/ScrollMarquee';
 
 const Index = () => {
   // Initialize smooth scrolling
@@ -112,11 +115,17 @@ const Index = () => {
       
       <Navbar />
       
-      {/* Interactive Hero Section with 3D video preview */}
-      <HeroInteractive youtubeId="W_YI4a4kQ08" />
+      {/* New Main Hero Section with Call-to-Action */}
+      <MainHero />
       
-      {/* Interactive About Section with 3D card */}
+      {/* Video Showcase Section */}
+      <VideoShowcase youtubeId="W_YI4a4kQ08" />
+      
+      {/* Interactive About Section with carousel */}
       <AboutInteractive />
+      
+      {/* Scrolling Marquee Section */}
+      <ScrollMarquee />
       
       {/* Standard Portfolio Section with YouTube thumbnails */}
       <Portfolio />

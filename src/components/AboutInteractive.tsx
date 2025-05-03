@@ -1,12 +1,15 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@/lib/utils';
 import { FileVideo, Video, Play } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
+} from '@/components/ui/carousel';
 
 interface SoftwareItem {
   name: string;
@@ -43,49 +46,8 @@ const software: SoftwareItem[] = [
 ];
 
 const AboutInteractive = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Set up automatic rotation of software cards
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % software.length);
-    }, 5000);
-
-    // Clear interval on unmount
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  // Handle mouse movement for 3D card effect
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    setMousePosition({
-      x: (x - centerX) / centerX * 10, // -10 to 10 degrees
-      y: (y - centerY) / centerY * -10, // -10 to 10 degrees
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setMousePosition({ x: 0, y: 0 });
-  };
-
   return (
     <div
-      ref={containerRef}
       className="relative min-h-screen bg-[#080808] py-24 px-6 overflow-hidden"
       id="about"
     >
@@ -107,55 +69,43 @@ const AboutInteractive = () => {
       
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* 3D Interactive Card - Fixed position */}
+          {/* Software Carousel */}
           <div className="relative">
             <motion.div
-              ref={cardRef}
-              className="about-card relative max-w-md mx-auto"
-              style={{
-                transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${mousePosition.y}deg)`,
-                transition: 'transform 0.2s ease-out',
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="max-w-md mx-auto"
             >
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-500/30 to-blue-500/30 rounded-xl blur-lg opacity-70"></div>
-              <div className="relative overflow-hidden rounded-lg border border-white/10 bg-black/80 p-8 backdrop-blur-md">
-                <div className="mb-6 flex justify-center">
-                  <img 
-                    src={software[activeIndex].icon} 
-                    alt={software[activeIndex].name} 
-                    className="w-32 h-32 object-contain" 
-                    style={{ filter: "invert(1)" }}
-                  />
-                </div>
-                <h3 className="text-center text-2xl font-boldone mb-2 text-white">{software[activeIndex].name}</h3>
-                <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-2">
-                  <div 
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
-                    style={{ width: `${software[activeIndex].proficiency}%` }}
-                  ></div>
-                </div>
-                <p className="text-center text-gray-400">{software[activeIndex].description}</p>
-                
-                {/* Card selection dots */}
-                <div className="flex justify-center gap-2 mt-6">
-                  {software.map((_, i) => (
-                    <button 
-                      key={i}
-                      className={cn(
-                        "w-2 h-2 rounded-full transition-all duration-300",
-                        i === activeIndex ? "bg-white scale-125" : "bg-white/30"
-                      )}
-                      onClick={() => setActiveIndex(i)}
-                    ></button>
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {software.map((item, index) => (
+                    <CarouselItem key={index}>
+                      <div className="rounded-lg border border-white/10 bg-black/80 p-8 backdrop-blur-md">
+                        <div className="mb-6 flex justify-center">
+                          <img 
+                            src={item.icon} 
+                            alt={item.name} 
+                            className="w-32 h-32 object-contain" 
+                            style={{ filter: "invert(1)" }}
+                          />
+                        </div>
+                        <h3 className="text-center text-2xl font-boldone mb-2 text-white">{item.name}</h3>
+                        <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-2">
+                          <div 
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
+                            style={{ width: `${item.proficiency}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-center text-gray-400">{item.description}</p>
+                      </div>
+                    </CarouselItem>
                   ))}
-                </div>
-              </div>
+                </CarouselContent>
+                <CarouselPrevious className="left-0 bg-black/50 text-white border-white/10 hover:bg-black/80" />
+                <CarouselNext className="right-0 bg-black/50 text-white border-white/10 hover:bg-black/80" />
+              </Carousel>
             </motion.div>
           </div>
           
