@@ -68,7 +68,7 @@ const Index = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="min-h-screen bg-[#0a0a0a]"
+      className="min-h-screen bg-[#0a0a0a] relative"
     >
       {/* Background gradients */}
       <motion.div 

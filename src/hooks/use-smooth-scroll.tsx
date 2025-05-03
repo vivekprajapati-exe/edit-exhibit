@@ -7,7 +7,7 @@ export const useSmoothScroll = () => {
 
   useEffect(() => {
     const lenisInstance = new Lenis({
-      duration: 1.2,
+      duration: 0.8, // Reduced from 1.2 for better performance
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
