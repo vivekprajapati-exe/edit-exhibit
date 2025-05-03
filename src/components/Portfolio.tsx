@@ -1,7 +1,6 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import VideoPlayer from './VideoPlayer';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight, Play } from 'lucide-react';
@@ -18,11 +17,6 @@ interface PortfolioItem {
   tags: string[];
   featured?: boolean;
 }
-
-/*
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/W_YI4a4kQ08?si=LoQMNq3aIgY3Ywfo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-*/
 
 export const portfolioItems: PortfolioItem[] = [
   {
@@ -95,7 +89,7 @@ const Portfolio = () => {
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
           className="mb-16 scroll-reveal"
         >
-          <h2 className="text-[15rem] md:text-8xl font-bebas uppercase tracking-tight text-white">
+          <h2 className="text-7xl md:text-8xl font-bebas uppercase tracking-tight text-white">
             MY<span className="text-gradient">PROJECTS</span>
           </h2>
           <p className="text-gray-400 max-w-2xl text-lg font-roboto">
@@ -116,28 +110,40 @@ const Portfolio = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group relative scroll-reveal"
             >
-              <div className="relative overflow-hidden rounded-lg bg-black">
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
-                <AspectRatio ratio={16/9} className="relative z-0">
-                  <VideoPlayer
-                    youtubeId={item.youtubeId}
-                    title={item.title}
-                    aspectRatio="16:9"
-                  />
-                </AspectRatio>
-              
+              <Link to={`/projects#${item.id}`} className="block">
+                <div className="relative overflow-hidden rounded-lg bg-black">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
+                  <AspectRatio ratio={16/9} className="relative z-0">
+                    <div className="relative w-full h-full">
+                      <img 
+                        src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                      
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
+                        >
+                          <Play size={24} className="ml-1" />
+                        </motion.div>
+                      </div>
+                    </div>
+                  </AspectRatio>
                 
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
-                  <div className="flex gap-2 mb-3">
-                    {item.tags.slice(0, 2).map((tag, i) => (
-                      <Badge key={i} variant="outline" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm">
-                        {tag}
-                      </Badge>
-                    ))}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                    <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
+                    <div className="flex gap-2 mb-3">
+                      {item.tags.slice(0, 2).map((tag, i) => (
+                        <Badge key={i} variant="outline" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

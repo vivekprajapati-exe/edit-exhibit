@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Play, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import VideoPlayer from '@/components/VideoPlayer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { portfolioItems } from '@/components/Portfolio';
 import useScrollReveal from '@/hooks/use-scroll-reveal';
@@ -109,16 +108,18 @@ const Projects = () => {
                       <ChevronLeft className="mr-2 h-4 w-4" /> Back to projects
                     </Button>
                     
-                    {/* Fix for video display - Making sure it's visible and styled properly */}
+                    {/* YouTube iframe implementation */}
                     <div className="w-full rounded-xl overflow-hidden relative scroll-reveal">
-                      <div className="w-full aspect-video">
-                        <VideoPlayer
-                          youtubeId={selectedProjectData.youtubeId}
+                      <AspectRatio ratio={16/9} className="bg-black border border-white/10">
+                        <iframe
+                          className="w-full h-full"
+                          src={`https://www.youtube.com/embed/${selectedProjectData.youtubeId}?rel=0&modestbranding=1`}
                           title={selectedProjectData.title}
-                          aspectRatio="16:9"
-                          className="w-full"
-                        />
-                      </div>
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </AspectRatio>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -152,28 +153,6 @@ const Projects = () => {
                         </div>
                       </div>
                     </div>
-                    
-                    <div className="mt-16">
-                      <h3 className="text-2xl font-bebas uppercase text-white mb-6">Before & After</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4 scroll-reveal">
-                          <h4 className="text-center font-boldone text-white mb-4">Before</h4>
-                          <img 
-                            src="/lovable-uploads/d380a5b4-2251-4e2e-9ebc-b44dd1eff3e7.png" 
-                            alt="Before" 
-                            className="w-full rounded-lg"
-                          />
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden p-4 scroll-reveal">
-                          <h4 className="text-center font-boldone text-white mb-4">After</h4>
-                          <img 
-                            src="/lovable-uploads/d380a5b4-2251-4e2e-9ebc-b44dd1eff3e7.png" 
-                            alt="After" 
-                            className="w-full rounded-lg"
-                          />
-                        </div>
-                      </div>
-                    </div>
                   </>
                 )}
               </motion.div>
@@ -198,22 +177,25 @@ const Projects = () => {
                       <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 to-purple-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
                       <div className="relative rounded-xl overflow-hidden bg-black transform transition-transform duration-500 group-hover:scale-[1.02]">
                         <AspectRatio ratio={16/9}>
-                          <VideoPlayer
-                            youtubeId={item.youtubeId}
-                            title={item.title}
-                            aspectRatio="16:9"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-70"></div>
+                          {/* YouTube thumbnail with play overlay */}
+                          <div className="relative w-full h-full">
+                            <img 
+                              src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
+                          </div>
+                          
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <motion.div
+                              whileHover={{ scale: 1.1 }}
+                              className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
+                            >
+                              <Play size={24} className="ml-1" />
+                            </motion.div>
+                          </div>
                         </AspectRatio>
-                        
-                        <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
-                          >
-                            <Play size={24} className="ml-1" />
-                          </motion.div>
-                        </div>
                         
                         <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                           <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>

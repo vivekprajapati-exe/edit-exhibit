@@ -1,62 +1,56 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
 import Portfolio from '@/components/Portfolio';
-import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
+import HeroInteractive from '@/components/HeroInteractive';
+import AboutInteractive from '@/components/AboutInteractive';
 
 const Index = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Parallax effect for background elements
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  // Initialize smooth scrolling
+  const lenis = useSmoothScroll();
   
-  // Refs for scroll reveal elements
-  const revealRefs = useRef<HTMLElement[]>([]);
-  
-  // Add to reveal refs
-  const addToRefs = (el: HTMLElement | null) => {
-    if (el && !revealRefs.current.includes(el)) {
-      revealRefs.current.push(el);
-    }
-  };
-
-  // Scroll reveal function
+  // Add CSS for particles animation
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          // Stop observing once revealed
-          observer.unobserve(entry.target);
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .particle-container {
+        overflow: hidden;
+        pointer-events: none;
+      }
+      
+      .particle {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: float linear infinite;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(0) translateX(0);
         }
-      });
-    }, observerOptions);
-
-    // Select all elements with scroll-reveal class
-    const scrollElements = document.querySelectorAll('.scroll-reveal');
-    scrollElements.forEach(el => {
-      observer.observe(el);
-    });
+        25% {
+          transform: translateY(-20px) translateX(10px);
+        }
+        50% {
+          transform: translateY(0) translateX(25px);
+        }
+        75% {
+          transform: translateY(20px) translateX(10px);
+        }
+        100% {
+          transform: translateY(0) translateX(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
 
     return () => {
-      scrollElements.forEach(el => {
-        observer.unobserve(el);
-      });
+      document.head.removeChild(style);
     };
   }, []);
 
@@ -76,16 +70,9 @@ const Index = () => {
       transition={{ duration: 0.8 }}
       className="min-h-screen bg-[#0a0a0a]"
     >
-      {/* Progress bar at the top of the page */}
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-500 to-purple-500 z-50 origin-left"
-        style={{ scaleX }}
-      />
-      
       {/* Background gradients */}
       <motion.div 
         className="fixed inset-0 pointer-events-none z-0"
-        style={{ y: backgroundY }}
       >
         {/* Top-right gradient */}
         <motion.div 
@@ -124,9 +111,16 @@ const Index = () => {
       </motion.div>
       
       <Navbar />
-      <Hero />
+      
+      {/* Interactive Hero Section with 3D video preview */}
+      <HeroInteractive youtubeId="W_YI4a4kQ08" />
+      
+      {/* Interactive About Section with 3D card */}
+      <AboutInteractive />
+      
+      {/* Standard Portfolio Section with YouTube thumbnails */}
       <Portfolio />
-      <About />
+      
       <Contact />
       <Footer />
     </motion.div>
