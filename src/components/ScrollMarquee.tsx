@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, easeOut } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 const ScrollMarquee = () => {
@@ -11,9 +11,9 @@ const ScrollMarquee = () => {
     offset: ["start end", "end start"]
   });
 
-  // Add smoother easing to the transition
-  const x1 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"], { ease: "easeOut" });
-  const x2 = useTransform(scrollYProgress, [0, 1], ["0%", "50%"], { ease: "easeOut" });
+  // Use the proper easing function from framer-motion
+  const x1 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"], { ease: easeOut });
+  const x2 = useTransform(scrollYProgress, [0, 1], ["0%", "50%"], { ease: easeOut });
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   return (
@@ -25,8 +25,8 @@ const ScrollMarquee = () => {
         className="absolute w-full h-full"
         style={{ opacity }}
       >
-        {/* First row - increased spacing and positioning */}
-        <div className="flex items-center h-[50%] overflow-hidden">
+        {/* First row with more vertical spacing */}
+        <div className="flex items-center h-[45%] overflow-hidden mb-4">
           <motion.div 
             className="flex whitespace-nowrap"
             style={{ x: x1 }}
@@ -46,8 +46,8 @@ const ScrollMarquee = () => {
           </motion.div>
         </div>
 
-        {/* Second row - increased spacing and explicit positioning */}
-        <div className="flex items-center h-[50%] overflow-hidden absolute bottom-0 left-0 right-0">
+        {/* Second row with more vertical spacing */}
+        <div className="flex items-center h-[45%] overflow-hidden absolute bottom-4 left-0 right-0">
           <motion.div 
             className="flex whitespace-nowrap"
             style={{ x: x2 }}
