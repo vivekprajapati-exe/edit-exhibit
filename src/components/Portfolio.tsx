@@ -30,11 +30,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: '2',
-    title: 'Commercial Product Showcase',
-    youtubeId: '3tmd-ClpJxA',
-    category: 'Commercial',
-    description: 'Elegant product showcase with smooth transitions and professional color grading.',
-    tags: ['Commercial', 'Product', 'Transitions', 'Color Grading'],
+    title: 'Cinematic Lightings',
+    youtubeId: 'hqu91-Trsnc',
+    category: 'Film',
+    description: 'Played with a great lighting and color grading',
+    tags: ['Color Grading'],
     featured: true
   },
   {
@@ -136,7 +136,7 @@ const Portfolio = () => {
                     <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
                     <div className="flex gap-2 mb-3">
                       {item.tags.slice(0, 2).map((tag, i) => (
-                        <Badge key={i} variant="outline" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm">
+                        <Badge key={i} variant="outline" className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm">
                           {tag}
                         </Badge>
                       ))}

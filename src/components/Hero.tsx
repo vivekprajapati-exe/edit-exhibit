@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex bg-black items-center justify-center px-6 py-20 overflow-hidden">
       {/* Grid background pattern */}
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none z-0"></div>
+      <div className="absolute inset-0 grid-bg opacity-100 pointer-events-none z-0"></div>
       
       {/* Animated gradient overlay */}
       <motion.div 
