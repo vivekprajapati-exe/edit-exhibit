@@ -21,19 +21,19 @@ interface SoftwareItem {
 const software: SoftwareItem[] = [
   {
     name: "Adobe Premiere Pro",
-    icon: "/lovable-uploads/9c60a2bc-3a08-4e10-9094-84fe1f2d40e3.png",
+    icon: "/lovable-uploads/premiere-pro.png",
     proficiency: 90,
     description: "Professional video editing and color grading"
   },
   {
     name: "Adobe After Effects",
-    icon: "/lovable-uploads/0707e3f5-5651-4118-99c3-17649f36ae0d.png",
-    proficiency: 85,
+    icon: "/lovable-uploads/after-effects.png",
+    proficiency: 50,
     description: "Motion graphics and visual effects"
   },
   {
     name: "Adobe Photoshop",
-    icon: "/lovable-uploads/9c60a2bc-3a08-4e10-9094-84fe1f2d40e3.png",
+    icon: "/lovable-uploads/photoshop.png",
     proficiency: 80,
     description: "Image editing and compositing"
   },
@@ -57,7 +57,7 @@ const AboutInteractive = () => {
       {/* Title */}
       <div className="container mx-auto mb-16 relative z-10">
         <motion.h2 
-          className="text-7xl md:text-8xl font-bold mb-8 tracking-tight text-white"
+          className="text-7xl md:text-8xl font-bold mb-8 tracking-tight glow-text text-white"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -88,13 +88,12 @@ const AboutInteractive = () => {
                             src={item.icon} 
                             alt={item.name} 
                             className="w-32 h-32 object-contain" 
-                            style={{ filter: "invert(1)" }}
                           />
                         </div>
                         <h3 className="text-center text-2xl font-boldone mb-2 text-white">{item.name}</h3>
                         <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden mb-2">
                           <div 
-                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-white to-white rounded-full"
                             style={{ width: `${item.proficiency}%` }}
                           ></div>
                         </div>

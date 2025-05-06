@@ -11,7 +11,7 @@ import AboutInteractive from '@/components/AboutInteractive';
 import MainHero from '@/components/MainHero';
 import VideoShowcase from '@/components/VideoShowcase';
 import ScrollMarquee from '@/components/ScrollMarquee';
-
+import SpotifyEmbed from '@/components/SpotifyEmbed';
 const Index = () => {
   // Initialize smooth scrolling
   const lenis = useSmoothScroll();
@@ -120,6 +120,8 @@ const Index = () => {
       
       {/* Video Showcase Section */}
       <VideoShowcase youtubeId="W_YI4a4kQ08" />
+
+      <SpotifyEmbed/>
       
       {/* Interactive About Section with carousel */}
       <AboutInteractive />
@@ -129,6 +131,8 @@ const Index = () => {
       
       {/* Standard Portfolio Section with YouTube thumbnails */}
       <Portfolio />
+      {/* <ColorGrading/> */}
+
       
       <Contact />
       <Footer />

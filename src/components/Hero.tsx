@@ -34,7 +34,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="font-bebas text-4xl md:text-5xl lg:text-7xl font-bold leading-tight uppercase">
+              <h1 className="font-bebas text-4xl md:text-5xl lg:text-7xl font-bold leading-tight uppercase glow-text  ">
                 Bringing <span className="text-gradient">Stories to Life</span> Through <span className="relative px-2 py-1 whitespace-nowrap">
                   <span className="relative z-10 glow-text">Expert Editing</span>
                   <span className="absolute inset-0 bg-white/5 rounded-md -z-10 glass-effect"></span>
