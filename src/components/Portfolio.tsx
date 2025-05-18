@@ -21,7 +21,7 @@ interface PortfolioItem {
 export const portfolioItems: PortfolioItem[] = [
   {
     id: '1',
-    title: 'Cinematogprhy Showreel',
+    title: 'Some cinematic Clips with lighting',
     youtubeId: 'W_YI4a4kQ08',
     category: 'Film',
     description: 'A breathtaking journey through the cinematics captured with just phone.',
@@ -39,35 +39,35 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: '3',
-    title: 'Corporate Brand Story',
-    youtubeId: 'SlPhMPnQ58k',
-    category: 'Corporate',
+    title: 'Busy Life Montage',
+    youtubeId: 'BtX3mxetrcs',
+    category: 'Commercial',
     description: 'Storytelling that connects your brand values with your audience.',
     tags: ['Corporate', 'Storytelling', 'Brand', 'Narrative'],
     featured: true
   },
   {
     id: '4',
-    title: 'Music Video Edit',
-    youtubeId: 'kJQP7kiw5Fk',
-    category: 'Music',
+    title: 'After Effect great amv',
+    youtubeId: 'ebzL7YA2sGo',
+    category: 'Film',
     description: 'Dynamic editing synchronized perfectly with the rhythm and mood of the music.',
     tags: ['Music Video', 'Rhythm Editing', 'Visual Effects', 'Dynamic']
   },
   {
     id: '5',
-    title: 'Documentary Style Feature',
-    youtubeId: 'pRpeEdMmmQ0',
+    title: 'My Eyes Amv',
+    youtubeId: 'U9hX57bVa5Y',
     category: 'Film',
-    description: 'In-depth storytelling that captures authentic moments and emotions.',
+    description: 'A great after effects amv put with the lots effort that it immerses yourself ',
     tags: ['Documentary', 'Storytelling', 'Interview', 'Authentic']
   },
   {
     id: '6',
-    title: 'Motion Graphics Showreel',
-    youtubeId: '6ONRf7h3Mdk',
+    title: 'Cinematogprhy Showreel',
+    youtubeId: 'W_YI4a4kQ08',
     category: 'Motion',
-    description: 'Visual showcase of dynamic motion graphics and animation work.',
+    description: 'A breathtaking journey through the cinematics captured with just phone',
     tags: ['Motion Graphics', 'Animation', 'Visual Effects', 'Showreel']
   }
 ];
