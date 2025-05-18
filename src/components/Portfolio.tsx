@@ -22,7 +22,7 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: '1',
     title: 'Some cinematic Clips with lighting',
-    youtubeId: 'W_YI4a4kQ08',
+    youtubeId: 'puJ8A7jtc24',
     category: 'Film',
     description: 'A breathtaking journey through the cinematics captured with just phone.',
     tags: ['Cinematic', 'Travel', '4K', 'Landscape'],
@@ -56,8 +56,8 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: '5',
-    title: 'My Eyes Amv',
-    youtubeId: 'U9hX57bVa5Y',
+    title: 'Timeless Amv',
+    youtubeId: 'jn_2a_rSWHg',
     category: 'Film',
     description: 'A great after effects amv put with the lots effort that it immerses yourself ',
     tags: ['Documentary', 'Storytelling', 'Interview', 'Authentic']
