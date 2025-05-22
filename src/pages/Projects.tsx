@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -9,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { portfolioItems } from '@/components/Portfolio';
+import VerticalVideoShowcase from '@/components/VerticalVideoShowcase';
 
-const categories = ['All', 'Film', 'Commercial', 'Corporate', 'Music', 'Motion'];
+const categories = ['All', 'Film', 'Commercial', 'Corporate', 'Music', 'Motion', 'Vertical'];
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -24,6 +24,8 @@ const Projects = () => {
   const selectedProjectData = selectedProject 
     ? portfolioItems.find(item => item.id === selectedProject)
     : null;
+
+  const showVerticalVideos = selectedCategory === 'All' || selectedCategory === 'Vertical';
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -62,19 +64,21 @@ const Projects = () => {
             </motion.h1>
           </div>
 
-          <div className="mb-10">
-            <Tabs defaultValue="All" className="w-full">
+          <div className="mb-10 overflow-x-auto scrollbar-hide">
+            <Tabs 
+              defaultValue="All" 
+              className="w-full"
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <TabsList className={cn(
-                "h-auto p-1 bg-black/20 backdrop-blur-sm border border-white/5 rounded-full",
-                isMobile 
-                  ? "flex w-full overflow-x-auto gap-1 justify-start pb-1 px-1 flex-nowrap" 
-                  : "inline-flex"
+                "h-auto p-1 bg-black/20 backdrop-blur-sm border border-white/5 rounded-full w-auto inline-flex",
+                isMobile ? "flex overflow-x-auto gap-1 justify-start pb-1 px-1 flex-nowrap min-w-full" : ""
               )}>
                 {categories.map((category) => (
                   <TabsTrigger 
                     key={category}
                     value={category}
-                    onClick={() => setSelectedCategory(category)}
                     className="px-4 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:text-black font-boldone whitespace-nowrap flex-shrink-0"
                   >
                     {category}
@@ -160,51 +164,109 @@ const Projects = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                  {filteredItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="group cursor-pointer relative"
-                      onClick={() => setSelectedProject(item.id)}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 to-purple-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
-                      <div className="relative rounded-xl overflow-hidden bg-black transform transition-transform duration-500 group-hover:scale-[1.02]">
-                        <AspectRatio ratio={16/9}>
-                          {/* YouTube thumbnail with play overlay */}
-                          <div className="relative w-full h-full">
-                            <img 
-                              src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
-                              alt={item.title}
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
-                          </div>
+                {showVerticalVideos && selectedCategory === 'Vertical' && (
+                  <VerticalVideoShowcase />
+                )}
+                
+                {(selectedCategory !== 'Vertical' && filteredItems.length > 0) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {filteredItems.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        className="group cursor-pointer relative"
+                        onClick={() => setSelectedProject(item.id)}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 to-purple-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
+                        <div className="relative rounded-xl overflow-hidden bg-black transform transition-transform duration-500 group-hover:scale-[1.02]">
+                          <AspectRatio ratio={16/9}>
+                            <div className="relative w-full h-full">
+                              <img 
+                                src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                                alt={item.title}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
+                            </div>
+                            
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <div className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center">
+                                <Play size={24} className="ml-1" />
+                              </div>
+                            </div>
+                          </AspectRatio>
                           
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center">
-                              <Play size={24} className="ml-1" />
+                          <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                            <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              {item.tags.slice(0, 2).map((tag, i) => (
+                                <Badge key={i} className="bg-white/10 hover:bg-white/20">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                            <p className="text-gray-400 text-sm line-clamp-2 font-roboto">{item.description}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+                
+                {selectedCategory === 'All' && (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                      {filteredItems.map((item, index) => (
+                        <motion.div
+                          key={item.id}
+                          initial={{ opacity: 0, y: 50 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                          className="group cursor-pointer relative"
+                          onClick={() => setSelectedProject(item.id)}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-tr from-red-500/20 to-purple-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
+                          <div className="relative rounded-xl overflow-hidden bg-black transform transition-transform duration-500 group-hover:scale-[1.02]">
+                            <AspectRatio ratio={16/9}>
+                              <div className="relative w-full h-full">
+                                <img 
+                                  src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                                  alt={item.title}
+                                  className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
+                              </div>
+                              
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center">
+                                  <Play size={24} className="ml-1" />
+                                </div>
+                              </div>
+                            </AspectRatio>
+                            
+                            <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                              <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
+                              <div className="flex flex-wrap gap-2 mb-2">
+                                {item.tags.slice(0, 2).map((tag, i) => (
+                                  <Badge key={i} className="bg-white/10 hover:bg-white/20">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                              <p className="text-gray-400 text-sm line-clamp-2 font-roboto">{item.description}</p>
                             </div>
                           </div>
-                        </AspectRatio>
-                        
-                        <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                          <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {item.tags.slice(0, 2).map((tag, i) => (
-                              <Badge key={i} className="bg-white/10 hover:bg-white/20">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                          <p className="text-gray-400 text-sm line-clamp-2 font-roboto">{item.description}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-20">
+                      <VerticalVideoShowcase />
+                    </div>
+                  </>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
