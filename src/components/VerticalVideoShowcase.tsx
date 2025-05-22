@@ -2,15 +2,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Instagram } from 'lucide-react';
+import { Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VerticalVideo {
   id: string;
   title: string;
-  instagramUrl: string;
-  embedId: string;
+  vimeoId: string;
+  externalUrl?: string;
   description: string;
   tags: string[];
 }
@@ -19,24 +19,24 @@ export const verticalVideos: VerticalVideo[] = [
   {
     id: 'v1',
     title: 'Travel Memory Reel',
-    instagramUrl: 'https://www.instagram.com/p/example1/',
-    embedId: 'CxLr-HqStuY',
+    vimeoId: '824804199',
+    externalUrl: 'https://vimeo.com/824804199',
     description: 'Cinematic vertical travel edit with smooth transitions',
     tags: ['Vertical', 'Travel', 'Transitions']
   },
   {
     id: 'v2',
     title: 'Fashion Lookbook',
-    instagramUrl: 'https://www.instagram.com/p/example2/',
-    embedId: 'CzBDPXOy531',
+    vimeoId: '819737983',
+    externalUrl: 'https://vimeo.com/819737983',
     description: 'Urban fashion showcase with creative transitions',
     tags: ['Vertical', 'Fashion', 'Urban']
   },
   {
     id: 'v3',
     title: 'Product Showcase',
-    instagramUrl: 'https://www.instagram.com/p/example3/',
-    embedId: 'CupW3k2N5Ah',
+    vimeoId: '824804245',
+    externalUrl: 'https://vimeo.com/824804245',
     description: 'Clean minimal product showcase with dynamic angles',
     tags: ['Vertical', 'Product', 'Commercial']
   }
@@ -57,7 +57,7 @@ const VerticalVideoShowcase = () => {
           <span className="text-gradient">Vertical Videos</span>
         </h2>
         <p className="text-gray-400 font-roboto">
-          Optimized for social media platforms like Instagram and TikTok
+          Optimized for social media platforms with professional-grade production
         </p>
       </motion.div>
 
@@ -74,32 +74,32 @@ const VerticalVideoShowcase = () => {
             className="group"
           >
             <div className="bg-black/20 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden">
-              <div className="relative mx-auto max-w-[280px]">
+              <div className="relative mx-auto">
                 <AspectRatio ratio={9/16} className="bg-black">
                   <iframe
                     className="w-full h-full absolute inset-0"
-                    src={`https://www.instagram.com/reel/${video.embedId}/embed/`}
+                    src={`https://player.vimeo.com/video/${video.vimeoId}?badge=0&autopause=0&autoplay=0&player_id=0&app_id=58479`}
                     frameBorder="0"
-                    scrolling="no"
+                    allow="autoplay; fullscreen; picture-in-picture"
                     allowFullScreen
+                    title={video.title}
                   ></iframe>
                 </AspectRatio>
-                
-                {/* Overlay that appears before video loads */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-50 pointer-events-none z-10"></div>
               </div>
               
               <div className="p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-xl font-boldone text-white">{video.title}</h3>
-                  <a 
-                    href={video.instagramUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/70 hover:text-white transition-colors"
-                  >
-                    <Instagram size={18} />
-                  </a>
+                  {video.externalUrl && (
+                    <a 
+                      href={video.externalUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white/70 hover:text-white transition-colors"
+                    >
+                      <Video size={18} />
+                    </a>
+                  )}
                 </div>
                 <p className="text-gray-400 text-sm mb-3 font-roboto">{video.description}</p>
                 <div className="flex gap-2 flex-wrap">
