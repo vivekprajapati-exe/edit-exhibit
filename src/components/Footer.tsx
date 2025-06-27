@@ -19,7 +19,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="text-2xl font-bold font-montserrat tracking-tight glow-text">
+            <h2 className="text-2xl font-bold font-montserrat tracking-tight text-white glow-text">
               VIVEK<span className="text-gray-500">PRAJAPATI</span>
             </h2>
             <p className="text-gray-500 mt-2">Professional Video Editing</p>

@@ -13,7 +13,7 @@ const MainHero = () => {
   };
 
   return (
-    <section className="min-h-[100vh] flex items-center justify-center px-4 sm:px-6 py-20 relative overflow-hidden">
+    <section className="min-h-[100vh] flex items-center justify-center px-4 sm:px-6 py-20 relative bg-black overflow-hidden">
       {/* Grid background pattern */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none z-0"></div>
       

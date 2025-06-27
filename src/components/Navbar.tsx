@@ -39,7 +39,7 @@ const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bebas tracking-wider glow-text">
+        <Link to="/" className="text-2xl text-white font-bebas tracking-wider glow-text">
           VIVEK<span className="text-gray-400">PRAJAPATI</span>
         </Link>
         

@@ -48,16 +48,14 @@ const software: SoftwareItem[] = [
 const AboutInteractive = () => {
   return (
     <div
-      className="relative min-h-screen bg-[#080808] py-24 px-6 overflow-hidden"
+      className="relative min-h-screen  py-24 px-6 overflow-hidden bg-black"
       id="about"
     >
-      {/* Background gradients */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#080808] via-[#0a0a0b] to-[#080808] z-0"></div>
       
       {/* Title */}
       <div className="container mx-auto mb-16 relative z-10">
         <motion.h2 
-          className="text-7xl md:text-8xl font-bold mb-8 tracking-tight glow-text text-white"
+          className="text-7xl md:text-[12rem] font-bold mb-8 font-bebas  glow-text text-white"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}

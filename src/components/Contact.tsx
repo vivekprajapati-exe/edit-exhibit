@@ -20,7 +20,7 @@ const Contact = () => {
   };
   
   return (
-    <section id="contact" className="py-24 px-6 bg-[#0c0c0c] relative">
+    <section id="contact" className="py-24 px-6  relative">
       {/* Subtle grid background */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
       
@@ -32,7 +32,7 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="  text-8xl md:text-4xl font-bold mb-4 text-gradient font-boldone">GET IN TOUCH</h2>
+          <h2 className="  text-8xl md:text-7xl font-bold mb-4 text-gradient tracking-wide font-bebas glow-text text-white">GET IN TOUCH</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Interested in working together? Fill out the form below or reach out directly to discuss your project.
           </p>

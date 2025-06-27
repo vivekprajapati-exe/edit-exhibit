@@ -7,6 +7,7 @@ import { ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link } from 'react-router-dom';
+import VerticalVideoShowcase from './VerticalVideoShowcase';
 
 interface PortfolioItem {
   id: string;
@@ -39,20 +40,20 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: '3',
-    title: 'Busy Life Montage',
-    youtubeId: 'BtX3mxetrcs',
-    category: 'Commercial',
-    description: 'Storytelling that connects your brand values with your audience.',
+    title: 'Motion Graphics Edit',
+    youtubeId: 'c7mgoiNnQVU',
+    category: 'Motion',
+    description: 'A 1-minute motion graphics edit showcasing my skills in visual storytelling, smooth transitions, and engaging design. Crafted using After Effects, Premiere Pro, Photoshop, and Lightroom to demonstrate high-retention, cinematic editing.',
     tags: ['Corporate', 'Storytelling', 'Brand', 'Narrative'],
     featured: true
   },
   {
     id: '4',
-    title: 'After Effect great amv',
-    youtubeId: 'ebzL7YA2sGo',
+    title: 'Busy Life Montage',
+    youtubeId: 'BtX3mxetrcs',
     category: 'Film',
-    description: 'Dynamic editing synchronized perfectly with the rhythm and mood of the music.',
-    tags: ['Music Video', 'Rhythm Editing', 'Visual Effects', 'Dynamic']
+    description: 'Storytelling that connects your brand values with your audience.',
+    tags: ['Corporate', 'Storytelling', 'Brand', 'Narrative']
   },
   {
     id: '5',
@@ -77,9 +78,9 @@ const Portfolio = () => {
   const featuredItems = portfolioItems.filter(item => item.featured);
 
   return (
-    <section id="portfolio" className="py-24 px-6 bg-[#0a0a0a] relative">
+    <section id="portfolio" className="py-24 px-6 bg-black relative">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#150a0a] to-[#0a0a0a] pointer-events-none"></div>
+      <div className="absolute inset-0  pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
@@ -89,7 +90,7 @@ const Portfolio = () => {
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
           className="mb-16 scroll-reveal"
         >
-          <h2 className="text-7xl md:text-8xl font-bebas uppercase tracking-tight text-white">
+          <h2 className="text-7xl md:text-[12rem] font-bebas uppercase glow-text tracking-tight text-white">
             MY<span className="text-gradient">PROJECTS</span>
           </h2>
           <p className="text-gray-400 max-w-2xl text-lg font-roboto">
@@ -111,7 +112,7 @@ const Portfolio = () => {
               className="group relative scroll-reveal"
             >
               <Link to={`/projects#${item.id}`} className="block">
-                <div className="relative overflow-hidden rounded-lg bg-black">
+                <div className="relative overflow-hidden rounded-lg ">
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
                   <AspectRatio ratio={16/9} className="relative z-0">
                     <div className="relative w-full h-full">
@@ -147,7 +148,7 @@ const Portfolio = () => {
             </motion.div>
           ))}
         </div>
-
+        <VerticalVideoShowcase/>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -155,7 +156,7 @@ const Portfolio = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex justify-center mt-16 scroll-reveal"
         >
-          <Link to="/projects" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm">
+          <Link to="/projects" className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors bg-gradient-to-l from-gray-600 to-blue-800  hover:bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm">
             <span className="text-lg font-boldone">View All Projects</span>
             <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
           </Link>
