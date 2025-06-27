@@ -4,13 +4,69 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import BlogList from '@/components/blog/BlogList';
 import SearchBar from '@/components/blog/SearchBar';
-import { blogPosts } from '@/data/blogPosts';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface BlogPost {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  author: string;
+  publishDate: string;
+  image?: string;
+  tags: string[];
+  slug: string;
+}
 
 /**
  * Blog page component - displays all blog posts with search functionality
  */
 const Blog: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('is_published', true)
+        .order('publish_date', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform the data to match the expected interface
+      const transformedPosts: BlogPost[] = (data || []).map(post => ({
+        id: post.id,
+        title: post.title,
+        summary: post.summary,
+        content: post.content,
+        author: post.author,
+        publishDate: post.publish_date,
+        image: post.image,
+        tags: post.tags || [],
+        slug: post.slug,
+      }));
+
+      setPosts(transformedPosts);
+    } catch (error: any) {
+      console.error('Error fetching posts:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load blog posts",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Reset search when component unmounts
   useEffect(() => {
@@ -60,8 +116,17 @@ const Blog: React.FC = () => {
               />
             </motion.div>
 
-            {/* Blog Posts */}
-            <BlogList posts={blogPosts} searchTerm={searchTerm} />
+            {/* Loading State */}
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-lg font-roboto">
+                  Loading posts...
+                </p>
+              </div>
+            ) : (
+              /* Blog Posts */
+              <BlogList posts={posts} searchTerm={searchTerm} />
+            )}
           </div>
         </main>
       </div>
