@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save, Eye, EyeOff, X } from 'lucide-react';
+import { ArrowLeft, Save, Eye, EyeOff, X, Image } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ImageUpload from './ImageUpload';
 
 interface BlogPost {
   id: string;
@@ -49,6 +51,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
   });
   const [newTag, setNewTag] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState<string | false>(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -159,6 +162,21 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
     }
   };
 
+  const handleImageSelect = (url: string) => {
+    if (showImageUpload === 'featured') {
+      setFormData(prev => ({ ...prev, image: url }));
+      setShowImageUpload(false);
+    } else {
+      // Insert into content at cursor position
+      const imageTag = `<img src="${url}" alt="Blog image" style="max-width: 100%; height: auto; margin: 1rem 0;" />`;
+      setFormData(prev => ({ 
+        ...prev, 
+        content: prev.content + '\n\n' + imageTag + '\n\n'
+      }));
+      setShowImageUpload(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* Header */}
@@ -208,173 +226,241 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="bg-black/20 border-white/10">
-            <CardContent className="p-6 space-y-6">
-              {/* Basic Info */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Title *
-                  </label>
-                  <Input
-                    value={formData.title}
-                    onChange={(e) => handleTitleChange(e.target.value)}
-                    placeholder="Enter post title..."
-                    className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                  />
-                </div>
+          <Tabs defaultValue="editor" className="space-y-6">
+            <TabsList className="bg-black/20 border-white/10">
+              <TabsTrigger value="editor" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Editor</TabsTrigger>
+              <TabsTrigger value="images" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Images</TabsTrigger>
+            </TabsList>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Slug
-                  </label>
-                  <Input
-                    value={formData.slug}
-                    onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                    placeholder="post-slug"
-                    className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                  />
-                </div>
+            <TabsContent value="editor">
+              <Card className="bg-black/20 border-white/10">
+                <CardContent className="p-6 space-y-6">
+                  {/* Basic Info */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Title *
+                      </label>
+                      <Input
+                        value={formData.title}
+                        onChange={(e) => handleTitleChange(e.target.value)}
+                        placeholder="Enter post title..."
+                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                      />
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Post Type
-                    </label>
-                    <Select
-                      value={formData.post_type}
-                      onValueChange={(value: 'article' | 'reel' | 'video') => 
-                        setFormData(prev => ({ ...prev, post_type: value }))
-                      }
-                    >
-                      <SelectTrigger className="bg-black/20 border-white/20 text-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="reel">Reel</SelectItem>
-                        <SelectItem value="video">Video</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Slug
+                      </label>
+                      <Input
+                        value={formData.slug}
+                        onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+                        placeholder="post-slug"
+                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Post Type
+                        </label>
+                        <Select
+                          value={formData.post_type}
+                          onValueChange={(value: 'article' | 'reel' | 'video') => 
+                            setFormData(prev => ({ ...prev, post_type: value }))
+                          }
+                        >
+                          <SelectTrigger className="bg-black/20 border-white/20 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="article">Article</SelectItem>
+                            <SelectItem value="reel">Reel</SelectItem>
+                            <SelectItem value="video">Video</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Author
+                        </label>
+                        <Input
+                          value={formData.author}
+                          onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Summary *
+                      </label>
+                      <Textarea
+                        value={formData.summary}
+                        onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+                        placeholder="Brief summary of the post..."
+                        rows={3}
+                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Author
-                    </label>
-                    <Input
-                      value={formData.author}
-                      onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                      className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                    />
-                  </div>
-                </div>
+                  {/* Media URLs */}
+                  {(formData.post_type === 'video' || formData.post_type === 'reel') && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          {formData.post_type === 'video' ? 'Video URL' : 'Reel URL'}
+                        </label>
+                        <Input
+                          value={formData.post_type === 'video' ? formData.video_url : formData.reel_url}
+                          onChange={(e) => setFormData(prev => ({
+                            ...prev,
+                            [formData.post_type === 'video' ? 'video_url' : 'reel_url']: e.target.value
+                          }))}
+                          placeholder="https://..."
+                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                        />
+                      </div>
+                    </div>
+                  )}
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Summary *
-                  </label>
-                  <Textarea
-                    value={formData.summary}
-                    onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
-                    placeholder="Brief summary of the post..."
-                    rows={3}
-                    className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                  />
-                </div>
-              </div>
-
-              {/* Media URLs */}
-              {(formData.post_type === 'video' || formData.post_type === 'reel') && (
-                <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      {formData.post_type === 'video' ? 'Video URL' : 'Reel URL'}
-                    </label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-medium text-gray-300">
+                        Featured Image URL
+                      </label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowImageUpload('featured')}
+                        className="border-white/20 text-white hover:bg-white/10"
+                      >
+                        <Image className="w-4 h-4 mr-2" />
+                        Browse Images
+                      </Button>
+                    </div>
                     <Input
-                      value={formData.post_type === 'video' ? formData.video_url : formData.reel_url}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        [formData.post_type === 'video' ? 'video_url' : 'reel_url']: e.target.value
-                      }))}
+                      value={formData.image}
+                      onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
                       placeholder="https://..."
                       className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                     />
                   </div>
-                </div>
-              )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Featured Image URL
-                </label>
-                <Input
-                  value={formData.image}
-                  onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                  placeholder="https://..."
-                  className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                />
-              </div>
-
-              {/* Tags */}
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Tags
-                </label>
-                <div className="flex gap-2 mb-2">
-                  <Input
-                    value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    placeholder="Add a tag..."
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                    className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                  />
-                  <Button
-                    type="button"
-                    onClick={addTag}
-                    variant="outline"
-                    className="border-white/20"
-                  >
-                    Add
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {formData.tags.map((tag, index) => (
-                    <Badge
-                      key={index}
-                      variant="secondary"
-                      className="bg-white/10 text-white"
-                    >
-                      {tag}
-                      <button
-                        onClick={() => removeTag(tag)}
-                        className="ml-2 text-xs"
+                  {/* Tags */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Tags
+                    </label>
+                    <div className="flex gap-2 mb-2">
+                      <Input
+                        value={newTag}
+                        onChange={(e) => setNewTag(e.target.value)}
+                        placeholder="Add a tag..."
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                      />
+                      <Button
+                        type="button"
+                        onClick={addTag}
+                        variant="outline"
+                        className="border-white/20"
                       >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+                        Add
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.map((tag, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="bg-white/10 text-white"
+                        >
+                          {tag}
+                          <button
+                            onClick={() => removeTag(tag)}
+                            className="ml-2 text-xs"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Content */}
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Content * (HTML supported)
-                </label>
-                <Textarea
-                  value={formData.content}
-                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                  placeholder="Write your post content here... HTML tags are supported for formatting."
-                  rows={20}
-                  className="bg-black/20 border-white/20 text-white placeholder-gray-400 font-mono text-sm"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  You can use HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;, etc.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+                  {/* Content */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-medium text-gray-300">
+                        Content * (HTML supported)
+                      </label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowImageUpload('content')}
+                        className="border-white/20 text-white hover:bg-white/10"
+                      >
+                        <Image className="w-4 h-4 mr-2" />
+                        Insert Image
+                      </Button>
+                    </div>
+                    <Textarea
+                      value={formData.content}
+                      onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                      placeholder="Write your post content here... HTML tags are supported for formatting."
+                      rows={20}
+                      className="bg-black/20 border-white/20 text-white placeholder-gray-400 font-mono text-sm"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      You can use HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;, etc.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="images">
+              <Card className="bg-black/20 border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white font-bebas">Image Manager</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ImageUpload onImageSelect={handleImageSelect} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+
+          {/* Image Upload Modal */}
+          {showImageUpload && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+              <Card className="bg-black/90 border-white/10 w-full max-w-2xl max-h-[80vh] overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-white font-bebas">
+                    {showImageUpload === 'featured' ? 'Select Featured Image' : 'Insert Image'}
+                  </CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowImageUpload(false)}
+                    className="text-white hover:bg-white/10"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="overflow-y-auto">
+                  <ImageUpload onImageSelect={handleImageSelect} />
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
