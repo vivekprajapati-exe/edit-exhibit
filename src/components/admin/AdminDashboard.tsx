@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User } from '@supabase/supabase-js';
@@ -14,6 +13,7 @@ interface BlogPost {
   id: string;
   title: string;
   summary: string;
+  content: string;
   author: string;
   publish_date: string;
   image?: string;
@@ -49,7 +49,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onSignOut }) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPosts(data || []);
+      
+      // Transform the data to match our BlogPost interface
+      const transformedPosts: BlogPost[] = (data || []).map(post => ({
+        ...post,
+        post_type: post.post_type as 'article' | 'reel' | 'video'
+      }));
+      
+      setPosts(transformedPosts);
     } catch (error: any) {
       toast({
         title: "Error",
