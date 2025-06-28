@@ -10,6 +10,7 @@ import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPostPage";
 import Admin from "./pages/Admin";
+import AdminAccountCreator from "./components/admin/AdminAccountCreator";
 import ColorGrading from "./components/ColorGrading";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin-setup" element={<AdminAccountCreator />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

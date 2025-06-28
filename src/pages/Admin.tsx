@@ -17,7 +17,6 @@ const Admin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -39,40 +38,22 @@ const Admin: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      if (isSignUp) {
-        const redirectUrl = `${window.location.origin}/admin`;
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: redirectUrl
-          }
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        toast({
-          title: "Sign up successful!",
-          description: "Please check your email to confirm your account.",
-        });
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) throw error;
-
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
-      }
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
     } catch (error: any) {
       toast({
         title: "Authentication Error",
@@ -122,14 +103,14 @@ const Admin: React.FC = () => {
           <Card className="bg-black/20 backdrop-blur-sm border border-white/10">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bebas uppercase text-white">
-                {isSignUp ? 'Create Admin Account' : 'Admin Login'}
+                Admin Login
               </CardTitle>
               <p className="text-gray-400 font-roboto">
-                {isSignUp ? 'Set up your admin account' : 'Access the blog management system'}
+                Access the blog management system
               </p>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleAuth} className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div>
                   <Input
                     type="email"
@@ -155,22 +136,9 @@ const Admin: React.FC = () => {
                   disabled={isLoading}
                   className="w-full bg-white text-black hover:bg-gray-200"
                 >
-                  {isLoading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+                  {isLoading ? 'Signing In...' : 'Sign In'}
                 </Button>
               </form>
-
-              <div className="mt-4 text-center">
-                <button
-                  type="button"
-                  onClick={() => setIsSignUp(!isSignUp)}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                >
-                  {isSignUp 
-                    ? 'Already have an account? Sign in' 
-                    : 'Need an account? Sign up'
-                  }
-                </button>
-              </div>
 
               <div className="mt-6 text-center">
                 <Button
