@@ -187,9 +187,9 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
               <Button
                 variant="ghost"
                 onClick={onCancel}
-                className="text-white hover:bg-white/10"
+                className="text-white hover:text-white hover:bg-white/10"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-4 h-4 mr-2 text-white" />
                 Back
               </Button>
               <h1 className="text-xl font-bebas uppercase text-white">
@@ -248,7 +248,6 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                         className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
-
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         Slug
@@ -260,7 +259,6 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                         className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -272,10 +270,10 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                             setFormData(prev => ({ ...prev, post_type: value }))
                           }
                         >
-                          <SelectTrigger className="bg-black/20 border-white/20 text-white">
+                          <SelectTrigger className="bg-black border-white/20 text-white">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="bg-zinc-900 border-white/20 text-white">
                             <SelectItem value="article">Article</SelectItem>
                             <SelectItem value="reel">Reel</SelectItem>
                             <SelectItem value="video">Video</SelectItem>

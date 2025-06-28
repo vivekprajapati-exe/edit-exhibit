@@ -156,7 +156,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onSignOut }) => {
               <h1 className="text-2xl font-bebas uppercase text-white">
                 Blog Admin Dashboard
               </h1>
-              <p className="text-gray-400 font-roboto">
+              <p className="text-white font-roboto">
                 Welcome back, {user.email}
               </p>
             </div>
@@ -295,9 +295,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onSignOut }) => {
                           size="sm"
                           variant="outline"
                           onClick={() => handleTogglePublish(post)}
-                          className="border-white/20"
+                          className="border-white/20 text-white hover:bg-white/10 rounded-full"
                         >
-                          <Eye className="w-4 h-4" />
+                          <Eye className="w-4 h-4 text-white" />
                         </Button>
                         <Button
                           size="sm"
@@ -306,15 +306,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onSignOut }) => {
                             setEditingPost(post);
                             setShowEditor(true);
                           }}
-                          className="border-white/20"
+                          className="border-white/20 text-white hover:bg-white/10 rounded-full"
                         >
-                          <Edit className="w-4 h-4" />
+                          <Edit className="w-4 h-4 text-white" />
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeletePost(post.id)}
-                          className="border-red-500/20 text-red-400 hover:bg-red-500/10"
+                          className="border-red-500/20 text-red-400 hover:bg-red-500/10 rounded-full"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
