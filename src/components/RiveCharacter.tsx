@@ -10,10 +10,8 @@ const RiveCharacter: React.FC<RiveCharacterProps> = ({ className = "" }) => {
   const { RiveComponent } = useRive({
     src: "/littleboy.riv",
     autoplay: true,
-    layout: {
-      fit: Fit.Contain,
-      alignment: Alignment.Center,
-    },
+    fit: Fit.Contain,
+    alignment: Alignment.Center,
   });
 
   return (
