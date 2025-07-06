@@ -34,21 +34,20 @@ const MainHero = () => {
             </motion.div>
             
             <motion.p 
-              className="text-lg md:text-xl text-gray-400 max-w-2xl lg:max-w-none"
+              className="text-base md:text-lg text-gray-400 max-w-xl lg:max-w-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              I transform ideas into captivating visual experiences. With expertise in editing, 
-              color grading, and motion graphics, I bring stories to life that engage viewers 
-              and elevate your brand.
+              I create captivating visual experiences through expert editing, 
+              color grading, and motion graphics.
             </motion.p>
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="pt-8"
+              className="pt-6"
             >
               <Button 
                 onClick={scrollToContact} 
@@ -61,14 +60,18 @@ const MainHero = () => {
           </div>
 
           {/* Right side - Animated character */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px]">
-              <RiveCharacter className="hover:scale-105 transition-transform duration-300" />
+          <motion.div className="hidden lg:block absolute bottom-0 right-0 z-10 w-60 h-60 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px]">
+            <div className="w-full h-full relative">
+              <RiveCharacter/>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none rounded-b-xl" />
+            </div>
+          </motion.div>
+          
+          {/* Mobile character - smaller and positioned differently */}
+          <motion.div className="lg:hidden flex justify-center mt-8">
+            <div className="w-48 h-48 sm:w-64 sm:h-64 relative">
+              <RiveCharacter/>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none rounded-b-xl" />
             </div>
           </motion.div>
         </div>
