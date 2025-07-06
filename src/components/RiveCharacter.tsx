@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useRive } from '@rive-app/react-canvas';
+import { useRive, Fit, Alignment } from '@rive-app/react-canvas';
 
 interface RiveCharacterProps {
   className?: string;
@@ -11,8 +11,8 @@ const RiveCharacter: React.FC<RiveCharacterProps> = ({ className = "" }) => {
     src: "/littleboy.riv",
     autoplay: true,
     layout: {
-      fit: 'contain',
-      alignment: 'center',
+      fit: Fit.Contain,
+      alignment: Alignment.Center,
     },
   });
 
