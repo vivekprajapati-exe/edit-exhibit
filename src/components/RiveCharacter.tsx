@@ -1,22 +1,24 @@
 
 import React from 'react';
-import { useRive, Fit, Alignment } from '@rive-app/react-canvas';
+import { useRive } from '@rive-app/react-canvas';
 
 interface RiveCharacterProps {
   className?: string;
 }
 
 const RiveCharacter: React.FC<RiveCharacterProps> = ({ className = "" }) => {
-  const { RiveComponent } = useRive({
+  const { rive, RiveComponent } = useRive({
     src: "/littleboy.riv",
     autoplay: true,
-    fit: Fit.Contain,
-    alignment: Alignment.Center,
   });
 
   return (
     <div className={`w-full h-full ${className}`}>
-      <RiveComponent />
+      <RiveComponent 
+        onMouseEnter={() => rive && rive.play()}
+        onMouseLeave={() => rive && rive.pause()}
+        style={{ width: '100%', height: '100%' }}
+      />
     </div>
   );
 };
