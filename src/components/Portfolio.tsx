@@ -99,8 +99,8 @@ const Portfolio = () => {
         </motion.div>
 
         <div className={cn(
-          "grid grid-cols-1 gap-12",
-          isMobile ? "" : "md:grid-cols-2 lg:grid-cols-3"
+          "grid grid-cols-1 gap-8",
+          isMobile ? "" : "md:grid-cols-2"
         )}>
           {featuredItems.map((item, index) => (
             <motion.div
@@ -109,39 +109,42 @@ const Portfolio = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative scroll-reveal"
+              className="group cursor-pointer scroll-reveal"
             >
               <Link to={`/projects#${item.id}`} className="block">
-                <div className="relative overflow-hidden rounded-lg ">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80"></div>
-                  <AspectRatio ratio={16/9} className="relative z-0">
-                    <div className="relative w-full h-full">
-                      <img 
-                        src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                      
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center"
-                        >
-                          <Play size={24} className="ml-1" />
-                        </motion.div>
-                      </div>
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 aspect-[4/3] mb-6 transform transition-transform duration-500 group-hover:scale-[1.02]">
+                  <img 
+                    src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                    alt={item.title}
+                    className="w-full h-full object-cover mix-blend-overlay"
+                  />
+                  
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center">
+                      <Play size={24} className="ml-1" />
                     </div>
-                  </AspectRatio>
+                  </div>
+                </div>
                 
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h3 className="text-2xl font-boldone text-white mb-2">{item.title}</h3>
-                    <div className="flex gap-2 mb-3">
-                      {item.tags.slice(0, 2).map((tag, i) => (
-                        <Badge key={i} variant="outline" className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-wide">
+                    {item.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 text-sm uppercase tracking-wider">
+                    {item.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag, i) => (
+                      <Badge 
+                        key={i} 
+                        variant="outline" 
+                        className="rounded-full px-4 py-1 text-xs uppercase tracking-wider border-gray-300 text-gray-300 hover:bg-white/10"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
               </Link>
