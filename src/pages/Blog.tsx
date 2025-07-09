@@ -6,6 +6,8 @@ import BlogList from '@/components/blog/BlogList';
 import SearchBar from '@/components/blog/SearchBar';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 interface BlogPost {
   id: string;
@@ -85,6 +87,7 @@ const Blog: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen bg-[#0a0a0a]">
+        <Navbar />
         <main className="pt-32 pb-24 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Page Header */}
@@ -129,6 +132,7 @@ const Blog: React.FC = () => {
             )}
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );

@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import BlogPost from '@/components/blog/BlogPost';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 interface BlogPostData {
   id: string;
@@ -112,9 +114,11 @@ const BlogPostPage: React.FC = () => {
       </Helmet>
 
       <div className="min-h-screen bg-[#0a0a0a]">
+        <Navbar />
         <main className="pt-32 pb-24 px-6">
           <BlogPost post={post} />
         </main>
+        <Footer />
       </div>
     </>
   );

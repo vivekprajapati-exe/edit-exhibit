@@ -46,7 +46,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-8">
           {isHomePage ? (
             <>
-              <NavLink href="#about">About</NavLink>
+              <Link to="/about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
               <NavLink href="#contact">Contact</NavLink>
               <Link to="/projects" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Projects</Link>
               <Link to="/blog" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Blog</Link>
@@ -54,7 +54,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Home</Link>
-              <Link to="/#about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
+              <Link to="/about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
               <Link to="/#contact" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Contact</Link>
               <Link to="/projects" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Projects</Link>
               <Link to="/blog" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Blog</Link>
@@ -90,8 +90,7 @@ const Navbar = () => {
             <div className="flex flex-col items-center space-y-6 py-8">
               {isHomePage ? (
                 <>
-                  <MobileNavLink href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</MobileNavLink>
-                  <MobileNavLink href="#about" onClick={() => setMobileMenuOpen(false)}>About</MobileNavLink>
+                  <Link to="/about" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>About</Link>
                   <MobileNavLink href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</MobileNavLink>
                   <Link to="/projects" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Projects</Link>
                   <Link to="/blog" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
@@ -99,8 +98,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link to="/" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                  <Link to="/#portfolio" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Portfolio</Link>
-                  <Link to="/#about" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>About</Link>
+                  <Link to="/about" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>About</Link>
                   <Link to="/#contact" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
                   <Link to="/projects" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Projects</Link>
                   <Link to="/blog" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Blog</Link>

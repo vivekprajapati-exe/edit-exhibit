@@ -121,17 +121,13 @@ const Index = () => {
       {/* Video Showcase Section */}
       <VideoShowcase youtubeId="W_YI4a4kQ08" />
 
-      <SpotifyEmbed/>
+      {/* Projects Section - Priority after showreel */}
+      <Portfolio />
       
-      {/* Interactive About Section with carousel */}
-      <AboutInteractive />
+      <SpotifyEmbed/>
       
       {/* Scrolling Marquee Section */}
       <ScrollMarquee />
-      
-      {/* Standard Portfolio Section with YouTube thumbnails */}
-      <Portfolio />
-      {/* <ColorGrading/> */}
 
       
       <Contact />
