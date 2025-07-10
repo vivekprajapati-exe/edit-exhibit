@@ -55,6 +55,7 @@ export type Database = {
           author: string
           content: string
           created_at: string
+          featured: boolean | null
           id: string
           image: string | null
           is_published: boolean | null
@@ -72,6 +73,7 @@ export type Database = {
           author?: string
           content: string
           created_at?: string
+          featured?: boolean | null
           id?: string
           image?: string | null
           is_published?: boolean | null
@@ -89,6 +91,7 @@ export type Database = {
           author?: string
           content?: string
           created_at?: string
+          featured?: boolean | null
           id?: string
           image?: string | null
           is_published?: boolean | null
@@ -101,6 +104,33 @@ export type Database = {
           title?: string
           updated_at?: string
           video_url?: string | null
+        }
+        Relationships: []
+      }
+      content_tags: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          usage_count: number | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          usage_count?: number | null
         }
         Relationships: []
       }

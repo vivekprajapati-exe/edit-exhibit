@@ -27,6 +27,14 @@ interface BlogPost {
   is_published: boolean;
   video_url?: string;
   reel_url?: string;
+  featured?: boolean;
+}
+
+interface ContentTag {
+  id: string;
+  name: string;
+  category: string;
+  usage_count: number;
 }
 
 interface BlogPostEditorProps {
@@ -48,10 +56,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
     is_published: false,
     video_url: '',
     reel_url: '',
+    featured: false,
   });
   const [newTag, setNewTag] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState<string | false>(false);
+  const [availableTags, setAvailableTags] = useState<ContentTag[]>([]);
+  const [filteredTags, setFilteredTags] = useState<ContentTag[]>([]);
+  const [showTagSuggestions, setShowTagSuggestions] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -68,9 +80,33 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
         is_published: post.is_published,
         video_url: post.video_url || '',
         reel_url: post.reel_url || '',
+        featured: post.featured || false,
       });
     }
   }, [post]);
+
+  // Load available tags
+  useEffect(() => {
+    const loadTags = async () => {
+      const { data, error } = await supabase
+        .from('content_tags')
+        .select('*')
+        .order('usage_count', { ascending: false });
+      
+      if (!error && data) {
+        setAvailableTags(data);
+      }
+    };
+    loadTags();
+  }, []);
+
+  // Filter tags based on post type and search
+  useEffect(() => {
+    const relevant = availableTags.filter(tag => 
+      tag.category === formData.post_type || tag.category === 'general'
+    );
+    setFilteredTags(relevant);
+  }, [availableTags, formData.post_type]);
 
   const generateSlug = (title: string) => {
     return title
@@ -87,13 +123,37 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
     }));
   };
 
-  const addTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+  const addTag = async (tagName?: string) => {
+    const tag = tagName || newTag.trim();
+    if (tag && !formData.tags.includes(tag)) {
+      // Add tag to form
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, newTag.trim()]
+        tags: [...prev.tags, tag]
       }));
+      
+      // Create tag in database if it doesn't exist
+      const { error } = await supabase
+        .from('content_tags')
+        .upsert({ 
+          name: tag, 
+          category: formData.post_type 
+        }, { 
+          onConflict: 'name',
+          ignoreDuplicates: true 
+        });
+      
+      if (!error) {
+        // Reload tags to update suggestions
+        const { data } = await supabase
+          .from('content_tags')
+          .select('*')
+          .order('usage_count', { ascending: false });
+        if (data) setAvailableTags(data);
+      }
+      
       setNewTag('');
+      setShowTagSuggestions(false);
     }
   };
 
@@ -259,7 +319,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                         className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">
                           Post Type
@@ -275,8 +335,8 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                           </SelectTrigger>
                           <SelectContent className="bg-zinc-900 border-white/20 text-white">
                             <SelectItem value="article">Article</SelectItem>
-                            <SelectItem value="reel">Reel</SelectItem>
-                            <SelectItem value="video">Video</SelectItem>
+                            <SelectItem value="reel">Reel (Vertical Video)</SelectItem>
+                            <SelectItem value="video">Video (My Projects)</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -291,6 +351,27 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                           className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                         />
                       </div>
+
+                      {(formData.post_type === 'video' || formData.post_type === 'reel') && (
+                        <div>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              checked={formData.featured}
+                              onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                              className="rounded border-white/20 bg-black/20"
+                            />
+                            <span className="text-sm text-gray-300">
+                              Featured on Landing Page
+                            </span>
+                          </label>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {formData.post_type === 'video' ? 
+                              'Show in Portfolio section on homepage' : 
+                              'Show in featured vertical videos'}
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     <div>
@@ -356,23 +437,65 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       Tags
                     </label>
-                    <div className="flex gap-2 mb-2">
-                      <Input
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
-                        placeholder="Add a tag..."
-                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
-                      />
-                      <Button
-                        type="button"
-                        onClick={addTag}
-                        variant="outline"
-                        className="border-white/20"
-                      >
-                        Add
-                      </Button>
+                    <div className="relative">
+                      <div className="flex gap-2 mb-2">
+                        <Input
+                          value={newTag}
+                          onChange={(e) => {
+                            setNewTag(e.target.value);
+                            setShowTagSuggestions(e.target.value.length > 0);
+                          }}
+                          onFocus={() => setShowTagSuggestions(newTag.length > 0)}
+                          onBlur={() => setTimeout(() => setShowTagSuggestions(false), 200)}
+                          placeholder="Type to search tags or create new..."
+                          onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => addTag()}
+                          variant="outline"
+                          className="border-white/20"
+                        >
+                          Add
+                        </Button>
+                      </div>
+                      
+                      {/* Tag Suggestions */}
+                      {showTagSuggestions && (
+                        <div className="absolute z-10 w-full bg-zinc-900 border border-white/20 rounded-md mt-1 max-h-40 overflow-y-auto">
+                          {filteredTags
+                            .filter(tag => 
+                              tag.name.toLowerCase().includes(newTag.toLowerCase()) &&
+                              !formData.tags.includes(tag.name)
+                            )
+                            .slice(0, 8)
+                            .map((tag) => (
+                              <button
+                                key={tag.id}
+                                type="button"
+                                onClick={() => addTag(tag.name)}
+                                className="w-full text-left px-3 py-2 text-white hover:bg-white/10 flex justify-between items-center"
+                              >
+                                <span>{tag.name}</span>
+                                <span className="text-xs text-gray-400">
+                                  {tag.category} • {tag.usage_count}
+                                </span>
+                              </button>
+                            ))}
+                          {newTag && !filteredTags.some(t => t.name.toLowerCase() === newTag.toLowerCase()) && (
+                            <button
+                              type="button"
+                              onClick={() => addTag()}
+                              className="w-full text-left px-3 py-2 text-green-400 hover:bg-white/10 italic"
+                            >
+                              Create "{newTag}"
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
+                    
                     <div className="flex flex-wrap gap-2">
                       {formData.tags.map((tag, index) => (
                         <Badge

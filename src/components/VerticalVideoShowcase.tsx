@@ -1,18 +1,20 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface VerticalVideo {
   id: string;
   title: string;
-  vimeoId: string;
+  vimeoId?: string;
   externalUrl?: string;
   description: string;
   tags: string[];
+  reel_url?: string;
 }
 
 export const verticalVideos: VerticalVideo[] = [
@@ -36,6 +38,43 @@ export const verticalVideos: VerticalVideo[] = [
 
 const VerticalVideoShowcase = () => {
   const isMobile = useIsMobile();
+  const [allReels, setAllReels] = useState<VerticalVideo[]>([]);
+
+  useEffect(() => {
+    const loadReels = async () => {
+      // Load published reels from database
+      const { data: reelData, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('post_type', 'reel')
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
+
+      if (!error && reelData) {
+        const dbReels: VerticalVideo[] = reelData.map((reel: any) => ({
+          id: reel.id,
+          title: reel.title,
+          description: reel.summary,
+          tags: reel.tags || [],
+          reel_url: reel.reel_url,
+        }));
+
+        // Combine with legacy vertical videos
+        setAllReels([...dbReels, ...verticalVideos]);
+      } else {
+        setAllReels(verticalVideos);
+      }
+    };
+
+    loadReels();
+  }, []);
+
+  const extractVimeoId = (url: string): string | null => {
+    if (!url) return null;
+    const regex = /vimeo\.com\/(?:video\/)?(\d+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
   
   return (
     <div className="py-10">
@@ -57,7 +96,11 @@ const VerticalVideoShowcase = () => {
         "grid gap-8",
         isMobile ? "grid-cols-1" : "grid-cols-2 md:grid-cols-3"
       )}>
-        {verticalVideos.map((video, index) => (
+        {allReels.map((video, index) => {
+          const vimeoId = video.vimeoId || extractVimeoId(video.reel_url || '');
+          if (!vimeoId) return null;
+          
+          return (
           <motion.div
             key={video.id}
             initial={{ opacity: 0, y: 50 }}
@@ -70,7 +113,7 @@ const VerticalVideoShowcase = () => {
                 <AspectRatio ratio={9/16} className="bg-black">
                   <iframe
                     className="w-full h-full absolute inset-0"
-                    src={`https://player.vimeo.com/video/${video.vimeoId}?badge=0&autopause=0&autoplay=0&player_id=0&app_id=58479`}
+                    src={`https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&autoplay=0&player_id=0&app_id=58479`}
                     allowFullScreen
                     title={video.title}
                   ></iframe>
@@ -92,7 +135,8 @@ const VerticalVideoShowcase = () => {
               </div>
             </div>
           </motion.div>
-        ))}
+          );
+        }).filter(Boolean)}
       </div>
     </div>
   );
