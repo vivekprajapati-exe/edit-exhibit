@@ -67,8 +67,8 @@ const Projects = () => {
             
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
               <div>
-                <h1 className="text-6xl lg:text-8xl font-bold text-white mb-6 leading-none">
-                  Our Work
+                <h1 className="text-6xl lg:text-8xl font-bebas f text-white mb-6 leading-none">
+                  My Works
                 </h1>
                 <div className="w-24 h-0.5 bg-white mb-8"></div>
               </div>
@@ -198,7 +198,7 @@ const Projects = () => {
                         className="group cursor-pointer"
                         onClick={() => setSelectedProject(item.id)}
                       >
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 aspect-[4/3] mb-6 transform transition-transform duration-500 group-hover:scale-[1.02]">
+                        <div className="relative overflow-hidden rounded-2xl  aspect-[4/3] mb-6 transform transition-transform duration-500 group-hover:scale-[1.02]">
                           <img 
                             src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
                             alt={item.title}
@@ -206,7 +206,7 @@ const Projects = () => {
                           />
                           
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center">
+                            <div className="bg-black bg-opacity-30  text-white rounded-full w-16 h-16 flex items-center justify-center">
                               <Play size={24} className="ml-1" />
                             </div>
                           </div>
