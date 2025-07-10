@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +7,7 @@ import { ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import VerticalVideoShowcase from './VerticalVideoShowcase';
 
 interface PortfolioItem {
@@ -75,7 +76,55 @@ export const portfolioItems: PortfolioItem[] = [
 
 const Portfolio = () => {
   const isMobile = useIsMobile();
-  const featuredItems = portfolioItems.filter(item => item.featured);
+  const [featuredItems, setFeaturedItems] = useState<PortfolioItem[]>([]);
+
+  useEffect(() => {
+    const loadFeaturedVideos = async () => {
+      // Load featured videos from database
+      const { data: videoData, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('post_type', 'video')
+        .eq('featured', true)
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
+
+      if (!error && videoData) {
+        const dbVideos: PortfolioItem[] = videoData
+          .map((video: any) => {
+            const youtubeId = extractYouTubeId(video.video_url);
+            if (!youtubeId) return null;
+            
+            return {
+              id: video.id,
+              title: video.title,
+              description: video.summary,
+              youtubeId,
+              tags: video.tags || [],
+              category: 'Featured Video',
+              featured: true
+            };
+          })
+          .filter(Boolean) as PortfolioItem[];
+
+        // Combine with legacy featured items
+        const legacyFeatured = portfolioItems.filter(item => item.featured);
+        setFeaturedItems([...dbVideos, ...legacyFeatured]);
+      } else {
+        // Fallback to legacy items
+        setFeaturedItems(portfolioItems.filter(item => item.featured));
+      }
+    };
+
+    loadFeaturedVideos();
+  }, []);
+
+  const extractYouTubeId = (url: string): string | null => {
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
 
   return (
     <section id="portfolio" className="py-24 px-6 bg-black relative">

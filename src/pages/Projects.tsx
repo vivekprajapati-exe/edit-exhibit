@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
@@ -11,20 +11,84 @@ import { portfolioItems } from '@/components/Portfolio';
 import VerticalVideoShowcase from '@/components/VerticalVideoShowcase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { supabase } from '@/integrations/supabase/client';
 
-const categories = ['All', 'Film', 'Commercial',  'Motion', 'Vertical'];
+const categories = ['All', 'Film', 'Commercial', 'Motion', 'Vertical'];
+
+interface VideoPost {
+  id: string;
+  title: string;
+  summary: string;
+  tags: string[];
+  video_url: string;
+  post_type: string;
+}
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const [allVideos, setAllVideos] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
 
-  const filteredItems = portfolioItems.filter(item => 
-    selectedCategory === 'All' || item.category === selectedCategory
-  );
+  useEffect(() => {
+    const loadAllVideos = async () => {
+      setIsLoading(true);
+      
+      // Load all published videos from database
+      const { data: videoData, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('post_type', 'video')
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
+
+      if (!error && videoData) {
+        const dbVideos = videoData
+          .map((video: any) => {
+            const youtubeId = extractYouTubeId(video.video_url);
+            if (!youtubeId) return null;
+            
+            return {
+              id: video.id,
+              title: video.title,
+              description: video.summary,
+              youtubeId,
+              tags: video.tags || [],
+              category: 'Video',
+              featured: video.featured
+            };
+          })
+          .filter(Boolean);
+
+        // Combine with legacy items
+        const allItems = [...dbVideos, ...portfolioItems];
+        setAllVideos(allItems);
+      } else {
+        setAllVideos(portfolioItems);
+      }
+      
+      setIsLoading(false);
+    };
+
+    loadAllVideos();
+  }, []);
+
+  const extractYouTubeId = (url: string): string | null => {
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  const filteredItems = selectedCategory === 'Vertical' 
+    ? [] // Don't show any regular videos for Vertical category
+    : allVideos.filter(item => 
+        selectedCategory === 'All' || item.category === selectedCategory
+      );
 
   const selectedProjectData = selectedProject 
-    ? portfolioItems.find(item => item.id === selectedProject)
+    ? allVideos.find(item => item.id === selectedProject)
     : null;
 
   const showVerticalVideos = selectedCategory === 'All' || selectedCategory === 'Vertical';
@@ -183,11 +247,11 @@ const Projects = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                {showVerticalVideos && selectedCategory === 'Vertical' && (
+                {selectedCategory === 'Vertical' ? (
                   <VerticalVideoShowcase />
-                )}
-                
-                {(selectedCategory !== 'Vertical' && filteredItems.length > 0) && (
+                ) : (
+                  <>
+                    {filteredItems.length > 0 && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                     {filteredItems.map((item, index) => (
                       <motion.div
@@ -235,12 +299,16 @@ const Projects = () => {
                         </div>
                       </motion.div>
                     ))}
-                  </div>
+                      </div>
+                    )}
+                    
+                    {selectedCategory === 'All' && (
+                      <div className="mt-20">
+                        <VerticalVideoShowcase />
+                      </div>
+                    )}
+                   </>
                 )}
-                
-                    <div className="mt-20">
-                      <VerticalVideoShowcase />
-                    </div>
               </motion.div>
             )}
           </AnimatePresence>
