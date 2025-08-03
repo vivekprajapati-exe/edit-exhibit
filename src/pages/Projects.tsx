@@ -138,10 +138,8 @@ const Projects = () => {
               </div>
               
               <div className="max-w-md text-right">
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  IT DOESN'T MATTER WHETHER YOU'RE REVOLUTIONIZING EVS, BUILDING AN AI EMPIRE, 
-                  DISRUPTING INSURTECH, OR SIMPLY THE SOLID DENTIST DOWN THE STREET. WE APPROACH 
-                  EVERY PROJECT WITH A MISSION TO TELL A COMPELLING STORY THAT STANDS OUT FROM THE REST.
+                <p className="text-gray-300 text-lg leading-relaxed capitalize">
+                  I turn brands, creators, and ideas into cinematic edits that hook, retain, and convert. Every project is crafted to tell a story that stands out.
                 </p>
               </div>
             </div>

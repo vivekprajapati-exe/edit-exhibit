@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -77,9 +78,11 @@ export const portfolioItems: PortfolioItem[] = [
 const Portfolio = () => {
   const isMobile = useIsMobile();
   const [featuredItems, setFeaturedItems] = useState<PortfolioItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadFeaturedVideos = async () => {
+      setIsLoading(true);
       // Load featured videos from database
       const { data: videoData, error } = await supabase
         .from('blog_posts')
@@ -114,6 +117,7 @@ const Portfolio = () => {
         // Fallback to legacy items
         setFeaturedItems(portfolioItems.filter(item => item.featured));
       }
+      setIsLoading(false);
     };
 
     loadFeaturedVideos();
@@ -151,7 +155,21 @@ const Portfolio = () => {
           "grid grid-cols-1 gap-8",
           isMobile ? "" : "md:grid-cols-2"
         )}>
-          {featuredItems.map((item, index) => (
+          {isLoading ? (
+            // Skeleton loading state
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="space-y-4">
+                <Skeleton className="h-[200px] w-full rounded-2xl" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-6 w-16 rounded-full" />
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                </div>
+              </div>
+            ))
+          ) : (
+            featuredItems.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 50 }}
@@ -198,7 +216,8 @@ const Portfolio = () => {
                 </div>
               </Link>
             </motion.div>
-          ))}
+            ))
+          )}
         </div>
         <VerticalVideoShowcase/>
         <motion.div

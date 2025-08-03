@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Video, Play, FileVideo } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
-const About = () => {
+const AboutCard = () => {
   const skills = [
     { 
       title: "Cinematic Editing", 
@@ -126,4 +126,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutCard;

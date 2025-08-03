@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import AboutInteractive from '@/components/AboutInteractive';
 import Footer from '@/components/Footer';
 
+
 const About = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
