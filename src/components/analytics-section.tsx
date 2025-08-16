@@ -6,6 +6,8 @@ import { TrendingUp, Eye, Users, Award, Play, BarChart3, ArrowUpRight } from "lu
 import { Card, CardContent } from "@/components/ui/card"
 import { Line, LineChart, Bar, BarChart, ResponsiveContainer } from "recharts"
 import { ChartContainer } from "@/components/ui/chart"
+import { Link } from "react-router-dom"
+
 
 interface CounterProps {
   end: number
@@ -139,7 +141,7 @@ export default function AnalyticsSection(): JSX.Element {
     suffix?: string
     prefix?: string
     description: string
-    chart: "line" | "bar" | "progress"
+    chart: "line" | "bar" | "progress" | "none"
     highlight?: boolean
   }
 
@@ -147,7 +149,7 @@ export default function AnalyticsSection(): JSX.Element {
     {
       icon: Eye,
       label: "Total Views Generated",
-      value: 1200000,
+      value: 60000,
       suffix: "+",
       description: "Across all client projects",
       chart: "line",
@@ -156,7 +158,7 @@ export default function AnalyticsSection(): JSX.Element {
     {
       icon: Play,
       label: "Projects Completed",
-      value: 123,
+      value: 48,
       suffix: "+",
       description: "Successful video campaigns",
       chart: "bar",
@@ -164,7 +166,7 @@ export default function AnalyticsSection(): JSX.Element {
     {
       icon: TrendingUp,
       label: "Average View Increase",
-      value: 185,
+      value: 122,
       suffix: "%",
       description: "Compared to previous content",
       chart: "progress",
@@ -175,7 +177,7 @@ export default function AnalyticsSection(): JSX.Element {
       value: 96,
       suffix: "%",
       description: "Based on project reviews",
-      chart: "progress",
+      chart: "none",
     },
     {
       icon: Award,
@@ -183,16 +185,15 @@ export default function AnalyticsSection(): JSX.Element {
       value: 87,
       suffix: "%",
       description: "Clients who return",
-      chart: "progress",
+      chart: "none",
     },
     {
       icon: BarChart3,
-      label: "Revenue Generated",
-      value: 450000,
-      prefix: "$",
+      label: "Happy Client",
+      value: 6,
       suffix: "+",
       description: "For clients through content",
-      chart: "line",
+      chart: "none",
     },
   ]
 
@@ -293,96 +294,72 @@ export default function AnalyticsSection(): JSX.Element {
                     </div>
 
                     {/* Enhanced Charts */}
-                    <div className="h-20 w-full mt-6">
-                      {metric.chart === "line" && index === 0 && (
-                        <ChartContainer
-                          config={{
-                            views: {
-                              label: "Views",
-                              color: "rgba(255,255,255,0.8)",
-                            },
-                          }}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={viewsData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                              <Line
-                                type="monotone"
-                                dataKey="views"
-                                stroke="rgba(255,255,255,0.7)"
-                                strokeWidth={2}
-                                dot={false}
-                                animationDuration={2500}
-                                animationBegin={800}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="views"
-                                stroke="rgba(255,255,255,0.2)"
-                                strokeWidth={1}
-                                dot={false}
-                                animationDuration={2500}
-                                animationBegin={800}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      )}
+                    {metric.chart !== "none" && (
+                      <div className="h-20 w-full mt-6">
+                        {metric.chart === "line" && index === 0 && (
+                          <ChartContainer
+                            config={{
+                              views: {
+                                label: "Views",
+                                color: "rgba(255,255,255,0.8)",
+                              },
+                            }}
+                            className="h-full w-full"
+                          >
+                            <ResponsiveContainer width="100%" height="100%">
+                              <LineChart data={viewsData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                                <Line
+                                  type="monotone"
+                                  dataKey="views"
+                                  stroke="rgba(255,255,255,0.7)"
+                                  strokeWidth={2}
+                                  dot={false}
+                                  animationDuration={2500}
+                                  animationBegin={800}
+                                />
+                                <Line
+                                  type="monotone"
+                                  dataKey="views"
+                                  stroke="rgba(255,255,255,0.2)"
+                                  strokeWidth={1}
+                                  dot={false}
+                                  animationDuration={2500}
+                                  animationBegin={800}
+                                />
+                              </LineChart>
+                            </ResponsiveContainer>
+                          </ChartContainer>
+                        )}
 
-                      {metric.chart === "bar" && index === 1 && (
-                        <ChartContainer
-                          config={{
-                            count: {
-                              label: "Projects",
-                              color: "rgba(255,255,255,0.8)",
-                            },
-                          }}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={projectsData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                              <Bar
-                                dataKey="count"
-                                fill="rgba(255,255,255,0.7)"
-                                radius={[2, 2, 0, 0]}
-                                animationDuration={2500}
-                                animationBegin={1000}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      )}
+                        {metric.chart === "bar" && index === 1 && (
+                          <ChartContainer
+                            config={{
+                              count: {
+                                label: "Projects",
+                                color: "rgba(255,255,255,0.8)",
+                              },
+                            }}
+                            className="h-full w-full"
+                          >
+                            <ResponsiveContainer width="100%" height="100%">
+                              <BarChart data={projectsData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                                <Bar
+                                  dataKey="count"
+                                  fill="rgba(255,255,255,0.7)"
+                                  radius={[2, 2, 0, 0]}
+                                  animationDuration={2500}
+                                  animationBegin={1000}
+                                />
+                              </BarChart>
+                            </ResponsiveContainer>
+                          </ChartContainer>
+                        )}
 
-                      {metric.chart === "progress" && (
-                        <AnimatedProgressBar percentage={metric.value} delay={1200 + index * 150} />
-                      )}
-
-                      {metric.chart === "line" && index === 5 && (
-                        <ChartContainer
-                          config={{
-                            revenue: {
-                              label: "Revenue",
-                              color: "rgba(255,255,255,0.8)",
-                            },
-                          }}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={revenueData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                              <Line
-                                type="monotone"
-                                dataKey="revenue"
-                                stroke="rgba(255,255,255,0.7)"
-                                strokeWidth={2}
-                                dot={false}
-                                animationDuration={2500}
-                                animationBegin={1400}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      )}
-                    </div>
+                        {metric.chart === "progress" && (
+                          <AnimatedProgressBar percentage={metric.value} delay={1200 + index * 150} />
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Bottom border accent */}
@@ -399,8 +376,7 @@ export default function AnalyticsSection(): JSX.Element {
         >
           <div className="inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-[1.02] cursor-pointer group shadow-2xl shadow-white/5">
             <span>Ready to Generate Results Like These?</span>
-            <TrendingUp className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300" />
-          </div>
+            <TrendingUp className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300" />          </div>
           <p className="text-gray-600 mt-6 text-sm font-light">
             Let's discuss how I can amplify your content's performance
           </p>
