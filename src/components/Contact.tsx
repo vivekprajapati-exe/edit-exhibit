@@ -23,7 +23,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 px-6  relative">
       {/* Subtle grid background */}
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+      <div className="absolute inset-0 grid-bg bg-black pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div

@@ -10,6 +10,7 @@ import MainHero from '@/components/MainHero';
 import VideoShowcase from '@/components/VideoShowcase';
 import ScrollMarquee from '@/components/ScrollMarquee';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
+import AnalyticsSection from '@/components/analytics-section';
 const Index = () => {
   // Initialize smooth scrolling
   const lenis = useSmoothScroll();
@@ -122,8 +123,7 @@ const Index = () => {
       {/* Projects Section - Priority after showreel */}
       <Portfolio />
       
-      <SpotifyEmbed/>
-      
+      <AnalyticsSection/>      
       {/* Scrolling Marquee Section */}
       <ScrollMarquee />
 
