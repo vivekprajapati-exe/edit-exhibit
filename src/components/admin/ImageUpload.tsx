@@ -156,12 +156,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
           type="file"
           accept="image/*"
           onChange={handleFileSelect}
-          className="bg-black/20 border-white/20 text-white file:bg-white/10 file:text-white file:border-white/20"
         />
         <Button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="bg-white text-black hover:bg-gray-200"
         >
           <Upload className="w-4 h-4 mr-2" />
           {uploading ? 'Uploading...' : 'Upload'}
@@ -169,17 +167,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-sm font-medium text-gray-300">Recent Images</h3>
+        <h3 className="text-sm font-medium">Recent Images</h3>
         {loadingImages ? (
-          <p className="text-gray-400 text-sm">Loading images...</p>
+          <p className="text-muted-foreground text-sm">Loading images...</p>
         ) : uploadedImages.length === 0 ? (
-          <p className="text-gray-400 text-sm">No images uploaded yet</p>
+          <p className="text-muted-foreground text-sm">No images uploaded yet</p>
         ) : (
           <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto">
             {uploadedImages.map((image) => (
-              <Card key={image.id} className="bg-black/20 border-white/10">
+              <Card key={image.id}>
                 <CardContent className="p-2">
-                  <div className="aspect-video relative overflow-hidden rounded bg-gray-800">
+                  <div className="aspect-video relative overflow-hidden rounded bg-muted">
                     <img
                       src={image.public_url}
                       alt={image.original_name}
@@ -187,13 +185,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
                     />
                   </div>
                   <div className="mt-2 space-y-1">
-                    <p className="text-xs text-gray-400 truncate">{image.original_name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{image.original_name}</p>
                     <div className="flex gap-1">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => insertImage(image.public_url)}
-                        className="flex-1 text-xs border-white/20 text-white hover:bg-white/10"
+                        className="flex-1 text-xs"
                       >
                         <Image className="w-3 h-3 mr-1" />
                         Use
@@ -202,7 +200,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
                         size="sm"
                         variant="outline"
                         onClick={() => copyImageUrl(image.public_url)}
-                        className="text-xs border-white/20 text-white hover:bg-white/10"
+                        className="text-xs"
                       >
                         <Copy className="w-3 h-3" />
                       </Button>

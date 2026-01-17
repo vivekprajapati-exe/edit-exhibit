@@ -1,0 +1,15 @@
+{
+  "name": "verify-otp",
+  "version": "1.0.0",
+  "description": "Verify OTP and send download link",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  }
+}

@@ -10,7 +10,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -19,7 +19,7 @@ const Navbar = () => {
         setIsScrolled(false);
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -42,13 +42,14 @@ const Navbar = () => {
         <Link to="/" className="text-2xl text-white font-bebas tracking-wider glow-text">
           VIVEK<span className="text-gray-400">PRAJAPATI</span>
         </Link>
-        
+
         <div className="hidden md:flex items-center space-x-8">
           {isHomePage ? (
             <>
               <Link to="/about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
               <NavLink href="#contact">Contact</NavLink>
               <Link to="/projects" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Projects</Link>
+              <Link to="/products" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Products</Link>
               <Link to="/blog" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Blog</Link>
             </>
           ) : (
@@ -57,13 +58,14 @@ const Navbar = () => {
               <Link to="/about" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">About</Link>
               <Link to="/#contact" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Contact</Link>
               <Link to="/projects" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Projects</Link>
+              <Link to="/products" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Products</Link>
               <Link to="/blog" className="font-boldone relative font-medium text-gray-300 hover:text-white transition-colors duration-200">Blog</Link>
             </>
           )}
         </div>
-        
+
         <div className="md:hidden">
-          <button 
+          <button
             onClick={toggleMobileMenu}
             className="p-2 rounded-full hover:bg-white/10 transition-colors"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -93,6 +95,7 @@ const Navbar = () => {
                   <Link to="/about" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>About</Link>
                   <MobileNavLink href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</MobileNavLink>
                   <Link to="/projects" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Projects</Link>
+                  <Link to="/products" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Products</Link>
                   <Link to="/blog" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
                 </>
               ) : (
@@ -101,6 +104,7 @@ const Navbar = () => {
                   <Link to="/about" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>About</Link>
                   <Link to="/#contact" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
                   <Link to="/projects" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Projects</Link>
+                  <Link to="/products" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Products</Link>
                   <Link to="/blog" className="text-xl font-boldone font-medium text-white py-2 px-6" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
                 </>
               )}
@@ -114,8 +118,8 @@ const Navbar = () => {
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
-    <a 
-      href={href} 
+    <a
+      href={href}
       className="relative font-boldone font-medium text-gray-300 hover:text-white transition-colors duration-200
                 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 
                 after:bottom-0 after:left-0 after:bg-white after:origin-bottom-right 
@@ -129,8 +133,8 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 
 const MobileNavLink = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => {
   return (
-    <motion.a 
-      href={href} 
+    <motion.a
+      href={href}
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
       className="text-xl font-boldone font-medium text-white py-2 px-6"

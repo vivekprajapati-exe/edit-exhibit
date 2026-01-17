@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Eye, EyeOff, X, Image } from 'lucide-react';
@@ -92,7 +94,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
         .from('content_tags')
         .select('*')
         .order('usage_count', { ascending: false });
-      
+
       if (!error && data) {
         setAvailableTags(data);
       }
@@ -102,7 +104,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
 
   // Filter tags based on post type and search
   useEffect(() => {
-    const relevant = availableTags.filter(tag => 
+    const relevant = availableTags.filter(tag =>
       tag.category === formData.post_type || tag.category === 'general'
     );
     setFilteredTags(relevant);
@@ -131,18 +133,18 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
         ...prev,
         tags: [...prev.tags, tag]
       }));
-      
+
       // Create tag in database if it doesn't exist
       const { error } = await supabase
         .from('content_tags')
-        .upsert({ 
-          name: tag, 
-          category: formData.post_type 
-        }, { 
+        .upsert({
+          name: tag,
+          category: formData.post_type
+        }, {
           onConflict: 'name',
-          ignoreDuplicates: true 
+          ignoreDuplicates: true
         });
-      
+
       if (!error) {
         // Reload tags to update suggestions
         const { data } = await supabase
@@ -151,7 +153,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
           .order('usage_count', { ascending: false });
         if (data) setAvailableTags(data);
       }
-      
+
       setNewTag('');
       setShowTagSuggestions(false);
     }
@@ -229,8 +231,8 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
     } else {
       // Insert into content at cursor position
       const imageTag = `<img src="${url}" alt="Blog image" style="max-width: 100%; height: auto; margin: 1rem 0;" />`;
-      setFormData(prev => ({ 
-        ...prev, 
+      setFormData(prev => ({
+        ...prev,
         content: prev.content + '\n\n' + imageTag + '\n\n'
       }));
       setShowImageUpload(false);
@@ -238,21 +240,20 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-white/10 bg-black/20 backdrop-blur-sm">
+      <div className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 onClick={onCancel}
-                className="text-white hover:text-white hover:bg-white/10"
               >
-                <ArrowLeft className="w-4 h-4 mr-2 text-white" />
+                <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <h1 className="text-xl font-bebas uppercase text-white">
+              <h1 className="text-xl font-bebas uppercase text-foreground">
                 {post ? 'Edit Post' : 'Create New Post'}
               </h1>
             </div>
@@ -261,7 +262,6 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                 variant="outline"
                 onClick={() => handleSave(false)}
                 disabled={isLoading}
-                className="border-white/20 text-white hover:bg-white/10"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
@@ -269,7 +269,6 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
               <Button
                 onClick={() => handleSave(true)}
                 disabled={isLoading}
-                className="bg-white text-black hover:bg-gray-200"
               >
                 {formData.is_published ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
                 {isLoading ? 'Saving...' : 'Publish'}
@@ -287,53 +286,51 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
           transition={{ duration: 0.6 }}
         >
           <Tabs defaultValue="editor" className="space-y-6">
-            <TabsList className="bg-black/20 border-white/10">
-              <TabsTrigger value="editor" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Editor</TabsTrigger>
-              <TabsTrigger value="images" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Images</TabsTrigger>
+            <TabsList>
+              <TabsTrigger value="editor">Editor</TabsTrigger>
+              <TabsTrigger value="images">Images</TabsTrigger>
             </TabsList>
 
             <TabsContent value="editor">
-              <Card className="bg-black/20 border-white/10">
+              <Card>
                 <CardContent className="p-6 space-y-6">
                   {/* Basic Info */}
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <Label className="block text-sm font-medium mb-2">
                         Title *
-                      </label>
+                      </Label>
                       <Input
                         value={formData.title}
                         onChange={(e) => handleTitleChange(e.target.value)}
                         placeholder="Enter post title..."
-                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <Label className="block text-sm font-medium mb-2">
                         Slug
-                      </label>
+                      </Label>
                       <Input
                         value={formData.slug}
                         onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
                         placeholder="post-slug"
-                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                           Post Type
-                        </label>
+                        </Label>
                         <Select
                           value={formData.post_type}
-                          onValueChange={(value: 'article' | 'reel' | 'video') => 
+                          onValueChange={(value: 'article' | 'reel' | 'video') =>
                             setFormData(prev => ({ ...prev, post_type: value }))
                           }
                         >
-                          <SelectTrigger className="bg-black border-white/20 text-white">
+                          <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-zinc-900 border-white/20 text-white">
+                          <SelectContent>
                             <SelectItem value="article">Article</SelectItem>
                             <SelectItem value="reel">Reel (Vertical Video)</SelectItem>
                             <SelectItem value="video">Video (My Projects)</SelectItem>
@@ -342,32 +339,30 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                           Author
-                        </label>
+                        </Label>
                         <Input
                           value={formData.author}
                           onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                         />
                       </div>
 
                       {(formData.post_type === 'video' || formData.post_type === 'reel') && (
-                        <div>
-                          <label className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <Checkbox
+                              id="featured"
                               checked={formData.featured}
-                              onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
-                              className="rounded border-white/20 bg-black/20"
+                              onCheckedChange={(checked) => setFormData(prev => ({ ...prev, featured: checked as boolean }))}
                             />
-                            <span className="text-sm text-gray-300">
+                            <Label htmlFor="featured" className="text-sm cursor-pointer">
                               Featured on Landing Page
-                            </span>
-                          </label>
-                          <p className="text-xs text-gray-500 mt-1">
-                            {formData.post_type === 'video' ? 
-                              'Show in Portfolio section on homepage' : 
+                            </Label>
+                          </div>
+                          <p className="text-xs text-muted-foreground ml-7">
+                            {formData.post_type === 'video' ?
+                              'Show in Portfolio section on homepage' :
                               'Show in featured vertical videos'}
                           </p>
                         </div>
@@ -375,15 +370,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <Label className="block text-sm font-medium mb-2">
                         Summary *
-                      </label>
+                      </Label>
                       <Textarea
                         value={formData.summary}
                         onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
                         placeholder="Brief summary of the post..."
                         rows={3}
-                        className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                       />
                     </div>
                   </div>
@@ -392,9 +386,9 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                   {(formData.post_type === 'video' || formData.post_type === 'reel') && (
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                           {formData.post_type === 'video' ? 'Video URL' : 'Reel URL'}
-                        </label>
+                        </Label>
                         <Input
                           value={formData.post_type === 'video' ? formData.video_url : formData.reel_url}
                           onChange={(e) => setFormData(prev => ({
@@ -402,7 +396,6 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                             [formData.post_type === 'video' ? 'video_url' : 'reel_url']: e.target.value
                           }))}
                           placeholder="https://..."
-                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                         />
                       </div>
                     </div>
@@ -410,15 +403,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
 
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-300">
+                      <Label className="block text-sm font-medium">
                         Featured Image URL
-                      </label>
+                      </Label>
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
                         onClick={() => setShowImageUpload('featured')}
-                        className="border-white/20 text-white hover:bg-white/10"
                       >
                         <Image className="w-4 h-4 mr-2" />
                         Browse Images
@@ -428,15 +420,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                       value={formData.image}
                       onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
                       placeholder="https://..."
-                      className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                     />
                   </div>
 
                   {/* Tags */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <Label className="block text-sm font-medium mb-2">
                       Tags
-                    </label>
+                    </Label>
                     <div className="relative">
                       <div className="flex gap-2 mb-2">
                         <Input
@@ -449,23 +440,21 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                           onBlur={() => setTimeout(() => setShowTagSuggestions(false), 200)}
                           placeholder="Type to search tags or create new..."
                           onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                          className="bg-black/20 border-white/20 text-white placeholder-gray-400"
                         />
                         <Button
                           type="button"
                           onClick={() => addTag()}
                           variant="outline"
-                          className="border-white/20"
                         >
                           Add
                         </Button>
                       </div>
-                      
+
                       {/* Tag Suggestions */}
                       {showTagSuggestions && (
-                        <div className="absolute z-10 w-full bg-zinc-900 border border-white/20 rounded-md mt-1 max-h-40 overflow-y-auto">
+                        <div className="absolute z-10 w-full bg-popover border border-border rounded-md mt-1 max-h-40 overflow-y-auto">
                           {filteredTags
-                            .filter(tag => 
+                            .filter(tag =>
                               tag.name.toLowerCase().includes(newTag.toLowerCase()) &&
                               !formData.tags.includes(tag.name)
                             )
@@ -475,10 +464,10 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                                 key={tag.id}
                                 type="button"
                                 onClick={() => addTag(tag.name)}
-                                className="w-full text-left px-3 py-2 text-white hover:bg-white/10 flex justify-between items-center"
+                                className="w-full text-left px-3 py-2 text-foreground hover:bg-accent flex justify-between items-center"
                               >
                                 <span>{tag.name}</span>
-                                <span className="text-xs text-gray-400">
+                                <span className="text-xs text-muted-foreground">
                                   {tag.category} • {tag.usage_count}
                                 </span>
                               </button>
@@ -487,7 +476,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                             <button
                               type="button"
                               onClick={() => addTag()}
-                              className="w-full text-left px-3 py-2 text-green-400 hover:bg-white/10 italic"
+                              className="w-full text-left px-3 py-2 text-green-400 hover:bg-accent italic"
                             >
                               Create "{newTag}"
                             </button>
@@ -495,13 +484,12 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="flex flex-wrap gap-2">
                       {formData.tags.map((tag, index) => (
                         <Badge
                           key={index}
                           variant="secondary"
-                          className="bg-white/10 text-white"
                         >
                           {tag}
                           <button
@@ -518,15 +506,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                   {/* Content */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-300">
+                      <Label className="block text-sm font-medium">
                         Content * (HTML supported)
-                      </label>
+                      </Label>
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
                         onClick={() => setShowImageUpload('content')}
-                        className="border-white/20 text-white hover:bg-white/10"
                       >
                         <Image className="w-4 h-4 mr-2" />
                         Insert Image
@@ -537,9 +524,9 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
                       onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
                       placeholder="Write your post content here... HTML tags are supported for formatting."
                       rows={20}
-                      className="bg-black/20 border-white/20 text-white placeholder-gray-400 font-mono text-sm"
+                      className="font-mono text-sm"
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       You can use HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;, etc.
                     </p>
                   </div>
@@ -548,9 +535,9 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
             </TabsContent>
 
             <TabsContent value="images">
-              <Card className="bg-black/20 border-white/10">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="text-white font-bebas">Image Manager</CardTitle>
+                  <CardTitle className="font-bebas">Image Manager</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ImageUpload onImageSelect={handleImageSelect} />
@@ -561,17 +548,16 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, onSave, onCancel 
 
           {/* Image Upload Modal */}
           {showImageUpload && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-              <Card className="bg-black/90 border-white/10 w-full max-w-2xl max-h-[80vh] overflow-hidden">
+            <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+              <Card className="w-full max-w-2xl max-h-[80vh] overflow-hidden">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-white font-bebas">
+                  <CardTitle className="font-bebas">
                     {showImageUpload === 'featured' ? 'Select Featured Image' : 'Insert Image'}
                   </CardTitle>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowImageUpload(false)}
-                    className="text-white hover:bg-white/10"
                   >
                     <X className="w-4 h-4" />
                   </Button>
